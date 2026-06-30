@@ -10,12 +10,16 @@ import model.celular.Celular;
 
 public class DaoCelular {
 //	creat
-	public void adicionarCelular( double preco, int anoDeFabrico) throws SQLException {
+	public void adicionarCelular( int codigoMarca,int codigoModelo,int codigoCor,int  codigoFabricante,double preco, int anoDeFabrico) throws SQLException {
 		Connection con = Conexao.conectar();
 		PreparedStatement stmt = null;
-		stmt = con.prepareStatement("insert into celulares (preco, anoDeFabrico) values(?,?)");
-		stmt.setDouble(1, preco);
-		stmt.setInt(2, anoDeFabrico);
+		stmt = con.prepareStatement("insert into celulares (codigoMarca, codigoModelo, CodigoCor , codigoFabricante, preco, anoDeFabrico) values(?,?,?,?,?,?)");
+		stmt.setInt(1, codigoMarca);
+		stmt.setInt(2, codigoModelo);
+		stmt.setInt(3, codigoCor);
+		stmt.setInt(4, codigoFabricante);
+		stmt.setDouble(5, preco);
+		stmt.setInt(6, anoDeFabrico);
 		stmt.executeUpdate();
 		con.close();
  

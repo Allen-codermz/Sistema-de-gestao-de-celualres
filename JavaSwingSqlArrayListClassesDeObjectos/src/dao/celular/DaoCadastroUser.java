@@ -13,14 +13,15 @@ import model.celular.CadastroUser;
 
 public class DaoCadastroUser {
 //creat
-	public void adicionarUser(String nome, String apelido, String perfil, String senha) throws SQLException {
+	public void adicionarUser(String nome, String apelido,String username, String perfil, String senha) throws SQLException {
 		Connection con = Conexao.conectar();
 		PreparedStatement stmt = null;
-		stmt = con.prepareStatement("insert into users (nome, apelido, perfil, senha) values(?,?,?,?)");
+		stmt = con.prepareStatement("insert into users (nome, apelido,username, perfil, senha) values(?,?,?,?,?)");
 		stmt.setString(1, nome);
 		stmt.setString(2, apelido);
-		stmt.setString(3, perfil);
-		stmt.setString(4, senha);
+		stmt.setString(3, username);
+		stmt.setString(4, perfil);
+		stmt.setString(5, senha);
 		stmt.executeUpdate();
 		con.close();
 	}
@@ -36,9 +37,10 @@ public class DaoCadastroUser {
 			int codigoUser = rs.getInt(1);
 			String nome = rs.getString(2);
 			String apelido = rs.getString(3);
-			String perfil = rs.getString(4);
-			String senha = rs.getString(5);
-			users.add(new CadastroUser(codigoUser, nome, apelido, perfil, senha));
+			String username = rs.getString(4);
+			String perfil = rs.getString(5);
+			String senha = rs.getString(6);
+			users.add(new CadastroUser(codigoUser, nome, apelido, username,perfil, senha));
 		}
 		con.close();
 		return users;
@@ -69,23 +71,21 @@ public class DaoCadastroUser {
 
 
 	// autenticar
-	public CadastroUser autenticarUser(String nome, String apelido, String senha) {
+	public CadastroUser autenticarUser(String username,String senha) {
 		PreparedStatement stmt = null;
 		Connection con = Conexao.conectar();
 		try {
-			stmt = con.prepareStatement("SELECT * FROM users where nome=? AND apelido=? AND senha=?");
+			stmt = con.prepareStatement("SELECT * FROM users where username=? AND senha=?");
 
-			stmt.setString(1, nome);
-			stmt.setString(2, apelido);
-			stmt.setString(3, senha);
+			stmt.setString(1, username);
+			stmt.setString(2, senha);
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
 
 				CadastroUser user = new CadastroUser();
 				user.setCodigoUsuario(rs.getInt("codigoUser"));
-				user.setNome(rs.getString("nome"));
-				user.setApelido(rs.getString("apelido"));
+				user.setNome(rs.getString("username"));
 				user.setPerfil(rs.getString("perfil"));
 				user.setSenha(rs.getString("senha"));
 

@@ -10,11 +10,12 @@ import controller.celular.Conexao;
 import model.celular.Cor;
 
 public class DaoCor {
-	public void adicionarCor(String cor) throws SQLException {
+	public void adicionarCor(String cor, String descricao) throws SQLException {
 		Connection con = Conexao.conectar();
 		PreparedStatement stmt = null;
-		stmt = con.prepareStatement("insert into cor(nomeHexa) values(?)");
+		stmt = con.prepareStatement("insert into cor(cor, descricao) values(?,?)");
 		stmt.setString(1, cor);
+		stmt.setString(2, descricao);
 		stmt.executeUpdate();
 		con.close();
 
@@ -22,28 +23,30 @@ public class DaoCor {
 
 // read
 	public ArrayList<Cor> listaDeCores() throws SQLException, ClassNotFoundException {
-		ArrayList<Cor> modelos = new ArrayList<Cor>();
+		ArrayList<Cor> cores = new ArrayList<Cor>();
 		PreparedStatement stmt = null;
 		Connection con = Conexao.conectar();
 		stmt = con.prepareStatement("SELECT * FROM cor");
 		ResultSet rs = stmt.executeQuery();
 		while (rs.next()) {
-			int codigoModelo = rs.getInt(1);
-			String modelo = rs.getString(2);
+			int codigoCor = rs.getInt(1);
+			String cor = rs.getString(2);
+			String descricao = rs.getString(3);
 
-			modelos.add(new Cor(codigoModelo, modelo));
+			cores.add(new Cor(codigoCor, cor, descricao));
 		}
 		con.close();
-		return modelos;
+		return cores;
 	}
 
 //	update
-	public void actualizarCor(int codigoCor, String cor) throws SQLException {
+	public void actualizarCor(int codigoCor, String cor,String descricao) throws SQLException {
 		Connection con = Conexao.conectar();
 		PreparedStatement stmt = null;
-		stmt = con.prepareStatement("update cor set nomeHexa=? where codigoCor=?");
+		stmt = con.prepareStatement("update cor set cor=? , descricao=? where codigoCor=?");
 		stmt.setString(1, cor);
-		stmt.setInt(2, codigoCor);
+		stmt.setString(2, descricao);
+		stmt.setInt(3, codigoCor);
 		stmt.executeUpdate();
 		con.close();
 

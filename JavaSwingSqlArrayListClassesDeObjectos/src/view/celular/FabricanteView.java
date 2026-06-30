@@ -34,6 +34,7 @@ public class FabricanteView implements ActionListener, MouseListener {
 	private JButton btnNewButton;
 	
 	private CadastroUser usuarioLogado;
+	private JLabel lblUser;
 
 	/**
 	 * Launch the application.
@@ -47,6 +48,9 @@ public class FabricanteView implements ActionListener, MouseListener {
 		this.usuarioLogado=usuario;
 		initialize();
 		confirmarPermissoes();
+		if(usuario != null) {
+			lblUser.setText("Usuario: "+ usuarioLogado.getNome()+" | "+"Perfil: "+usuarioLogado.getPerfil());
+		}
 	}
 
 	public void setVisible(boolean visible) {
@@ -178,13 +182,19 @@ public class FabricanteView implements ActionListener, MouseListener {
 		btnNewButton.setBackground(new Color(0, 70, 67));
 		btnNewButton.setBounds(1193, 27, 136, 38);
 		frame.getContentPane().add(btnNewButton);
+		
+		lblUser = new JLabel("");
+		lblUser.setForeground(new Color(0, 70, 67));
+		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
+		lblUser.setBounds(610, 24, 444, 17);
+		frame.getContentPane().add(lblUser);
 	}
 	
 	public void confirmarPermissoes() {
 		if(usuarioLogado == null)return;
 		String perfil = usuarioLogado.getPerfil();
 		
-		if(perfil.equals("user")) {
+		if(perfil.equals("User")) {
 			btnEditar.setEnabled(false);
 			btnRemover.setEnabled(false);
 		}

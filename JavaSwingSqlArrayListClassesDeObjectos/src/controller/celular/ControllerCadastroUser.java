@@ -12,9 +12,9 @@ public class ControllerCadastroUser {
 	private DaoCadastroUser dao = new DaoCadastroUser();
 	private ControllerLog log = new ControllerLog();
 
-	public void adicionarUser(String nomeAd ,String perfilAd,String nome, String apelido, String perfil,String senha) throws SQLException {
+	public void adicionarUser(String nomeAd ,String perfilAd,String nome, String apelido,String username, String perfil,String senha) throws SQLException {
 		
-		dao.adicionarUser(nome, apelido, perfil, senha);
+		dao.adicionarUser(nome, apelido,username, perfil, senha);
 		log.registarLog(nomeAd, perfilAd, "Adicionou um usuario com o perfil de "+perfil);
 	}
 

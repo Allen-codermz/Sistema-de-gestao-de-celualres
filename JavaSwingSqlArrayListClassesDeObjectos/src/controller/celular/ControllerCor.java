@@ -8,20 +8,22 @@ import model.celular.Cor;
 
 public class ControllerCor {
 	
-	private DaoCor dao = new DaoCor();
+	private static DaoCor dao = new DaoCor();
 	private ControllerLog log = new ControllerLog();
 
 	public void adicionarCor(String usuario,String perfil,String cor) throws SQLException {
-		dao.adicionarCor(cor);
+		String descricao = CorApiService.buscarDescricao(cor);
+		dao.adicionarCor(cor, descricao);
 		log.registarLog(usuario, perfil, "Adicionou uma nova cor");
 	}
 
-	public ArrayList<Cor> listaDeCores() throws ClassNotFoundException, SQLException {
+	public static ArrayList<Cor> listaDeCores() throws ClassNotFoundException, SQLException {
 		return dao.listaDeCores();
 	}
 
 	public void actualizarCor(String usuario,String perfil,int codigoCor, String cor) throws SQLException {
-		dao.actualizarCor(codigoCor, cor);
+		String descricao = CorApiService.buscarDescricao(cor);
+		dao.actualizarCor(codigoCor, cor, descricao);
 		log.registarLog(usuario, perfil, "Actualizou uma cor com o codigo"+codigoCor);
 	}
 

@@ -6,7 +6,7 @@ import dao.celular.DaoMarca;
 import model.celular.Marca;
 
 public class Controllermarca {
-	private DaoMarca dao = new DaoMarca();
+	private static DaoMarca dao = new DaoMarca();
 	private ControllerLog log = new ControllerLog();
 	
 	public void adicionarMarca(String usuario,String perfil,String marca) throws SQLException {
@@ -14,7 +14,7 @@ public class Controllermarca {
 		log.registarLog(usuario, perfil,"Adicionou uma marca");
 	}
 
-	public ArrayList<Marca> listaDeMarcas() throws ClassNotFoundException, SQLException {
+	public static ArrayList<Marca> listaDeMarcas() throws ClassNotFoundException, SQLException {
 		return dao.listaDeMarcas();
 	}
 

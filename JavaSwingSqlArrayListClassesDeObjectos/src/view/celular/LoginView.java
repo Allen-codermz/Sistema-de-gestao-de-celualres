@@ -21,11 +21,10 @@ import java.awt.event.ActionEvent;
 public class LoginView implements ActionListener {
 
 	private JFrame frame;
-	private JTextField textNome;
+	private JTextField textUsername;
 	private JPasswordField passwordSenha;
 
 	private JButton btnIniciarSessao;
-	private JTextField textApelido;
 
 	/**
 	 * Launch the application.
@@ -78,19 +77,19 @@ public class LoginView implements ActionListener {
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
-		textNome = new JTextField();
-		textNome.setFont(new Font("Caladea", Font.PLAIN, 14));
-		textNome.setForeground(new Color(0, 70, 67));
-		textNome.setBackground(new Color(240, 237, 229));
-		textNome.setBounds(71, 77, 174, 46);
-		panel.add(textNome);
-		textNome.setColumns(10);
+		textUsername = new JTextField();
+		textUsername.setFont(new Font("Caladea", Font.PLAIN, 14));
+		textUsername.setForeground(new Color(0, 70, 67));
+		textUsername.setBackground(new Color(240, 237, 229));
+		textUsername.setBounds(71, 165, 174, 46);
+		panel.add(textUsername);
+		textUsername.setColumns(10);
 
-		JLabel lblNewLabel_1 = new JLabel("Nome usuario");
+		JLabel lblNewLabel_1 = new JLabel("Username");
 		lblNewLabel_1.setFont(new Font("Caladea", Font.BOLD, 14));
 		lblNewLabel_1.setForeground(new Color(0, 70, 67));
 		lblNewLabel_1.setBackground(new Color(0, 70, 67));
-		lblNewLabel_1.setBounds(75, 58, 103, 17);
+		lblNewLabel_1.setBounds(71, 136, 103, 17);
 		panel.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_2 = new JLabel("Senha");
@@ -110,50 +109,21 @@ public class LoginView implements ActionListener {
 		btnIniciarSessao.setFont(new Font("Caladea", Font.BOLD, 14));
 		btnIniciarSessao.setBackground(new Color(0, 70, 67));
 		btnIniciarSessao.setForeground(new Color(240, 237, 229));
-		btnIniciarSessao.setBounds(9, 391, 138, 45);
+		btnIniciarSessao.setBounds(91, 381, 138, 45);
 		btnIniciarSessao.addActionListener(this);
 		panel.add(btnIniciarSessao);
-
-		JButton btnResetarSenha = new JButton("Resetar Senha");
-		btnResetarSenha.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				resetSenhaView reset = new resetSenhaView();
-				reset.setVisible(true);
-			}
-		});
-		btnResetarSenha.setForeground(new Color(240, 237, 229));
-		btnResetarSenha.setFont(new Font("Caladea", Font.BOLD, 14));
-		btnResetarSenha.setBackground(new Color(0, 70, 67));
-		btnResetarSenha.setBounds(159, 391, 138, 45);
-		panel.add(btnResetarSenha);
-
-		textApelido = new JTextField();
-		textApelido.setFont(new Font("Caladea", Font.PLAIN, 14));
-		textApelido.setForeground(new Color(0, 70, 67));
-		textApelido.setColumns(10);
-		textApelido.setBackground(new Color(240, 237, 229));
-		textApelido.setBounds(71, 173, 174, 46);
-		panel.add(textApelido);
-
-		JLabel lblNewLabel_1_1 = new JLabel("Apelido usuario");
-		lblNewLabel_1_1.setForeground(new Color(0, 70, 67));
-		lblNewLabel_1_1.setFont(new Font("Caladea", Font.BOLD, 14));
-		lblNewLabel_1_1.setBackground(new Color(0, 70, 67));
-		lblNewLabel_1_1.setBounds(75, 154, 138, 17);
-		panel.add(lblNewLabel_1_1);
 	}
 
 	public void iniciarSessao() {
-		String nome = textNome.getText();
-		String apelido = textApelido.getText();
+		String username = textUsername.getText();
 		String senha = String.valueOf(passwordSenha.getPassword());
 	
-		if(nome.isEmpty()||apelido.isEmpty()||senha.isEmpty()) {
+		if(username.isEmpty() || senha.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Por favor preecha os campos");
 			return;
 		}
 		ControllerLogin controller = new ControllerLogin();
-		CadastroUser usuario = controller.autenticaUser(nome, apelido, senha);
+		CadastroUser usuario = controller.autenticaUser(username, senha);
 		if (usuario != null) {
 
 			TelaPrincipalView tela = new TelaPrincipalView(usuario);

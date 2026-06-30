@@ -36,12 +36,16 @@ public class CadastroUserView implements ActionListener {
 	private JTextField textApelido;
 	private JPasswordField textSenha;
 
-	private JButton btnCadastrar, btnGerarSenha, btnListar, btnEditar, btnRemover;
+	private JButton btnCadastrar, btnGerarSenha, btnListar, btnEditar, btnRemover, btnResetSenha;
 	private JTable table;
 
 	private JComboBox comboBoxPerfil;
 
 	private CadastroUser usuarioLogado;
+	private JLabel lblUser;
+	private JTextField textUsername;
+	private JButton btnSugestao;
+	private JLabel lblNewLabel_5;
 
 	/**
 	 * Launch the application.
@@ -54,7 +58,11 @@ public class CadastroUserView implements ActionListener {
 	public CadastroUserView(CadastroUser usuario) {
 		this.usuarioLogado = usuario;
 		initialize();
+		if(usuario != null) {
+			lblUser.setText("Usuario: "+ usuarioLogado.getNome()+" | "+"Perfil: "+usuarioLogado.getPerfil());
+		}
 	}
+	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -68,7 +76,7 @@ public class CadastroUserView implements ActionListener {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 237, 229));
-		panel.setBounds(49, 110, 353, 408);
+		panel.setBounds(49, 110, 353, 513);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -109,14 +117,14 @@ public class CadastroUserView implements ActionListener {
 		JLabel lblNewLabel_3 = new JLabel("Senha");
 		lblNewLabel_3.setFont(new Font("Caladea", Font.BOLD, 14));
 		lblNewLabel_3.setForeground(new Color(0, 70, 67));
-		lblNewLabel_3.setBounds(49, 232, 59, 17);
+		lblNewLabel_3.setBounds(49, 328, 59, 17);
 		panel.add(lblNewLabel_3);
 
 		textSenha = new JPasswordField();
 		textSenha.setForeground(new Color(0, 70, 67));
 		textSenha.setEditable(false);
 		textSenha.setBackground(new Color(240, 237, 229));
-		textSenha.setBounds(49, 248, 114, 43);
+		textSenha.setBounds(49, 344, 114, 43);
 		panel.add(textSenha);
 		textSenha.setColumns(10);
 
@@ -124,7 +132,7 @@ public class CadastroUserView implements ActionListener {
 		btnCadastrar.setFont(new Font("Caladea", Font.BOLD, 14));
 		btnCadastrar.setForeground(new Color(240, 237, 229));
 		btnCadastrar.setBackground(new Color(0, 70, 67));
-		btnCadastrar.setBounds(83, 353, 169, 43);
+		btnCadastrar.setBounds(83, 458, 169, 43);
 		btnCadastrar.addActionListener(this);
 		panel.add(btnCadastrar);
 
@@ -132,7 +140,7 @@ public class CadastroUserView implements ActionListener {
 		btnGerarSenha.setFont(new Font("Caladea", Font.BOLD, 14));
 		btnGerarSenha.setForeground(new Color(240, 237, 229));
 		btnGerarSenha.setBackground(new Color(0, 70, 67));
-		btnGerarSenha.setBounds(166, 248, 122, 43);
+		btnGerarSenha.setBounds(166, 344, 122, 43);
 		btnGerarSenha.addActionListener(this);
 		panel.add(btnGerarSenha);
 
@@ -143,6 +151,28 @@ public class CadastroUserView implements ActionListener {
 		comboBoxPerfil.setBackground(new Color(240, 237, 229));
 		comboBoxPerfil.setBounds(49, 170, 239, 44);
 		panel.add(comboBoxPerfil);
+		
+		textUsername = new JTextField();
+		textUsername.setFont(new Font("Caladea", Font.PLAIN, 14));
+		textUsername.setForeground(new Color(0, 70, 67));
+		textUsername.setColumns(10);
+		textUsername.setBackground(new Color(240, 237, 229));
+		textUsername.setBounds(49, 261, 114, 43);
+		panel.add(textUsername);
+		
+		btnSugestao = new JButton("Sugestão");
+		btnSugestao.setForeground(new Color(240, 237, 229));
+		btnSugestao.setFont(new Font("Caladea", Font.BOLD, 14));
+		btnSugestao.setBackground(new Color(0, 70, 67));
+		btnSugestao.setBounds(166, 261, 122, 43);
+		btnSugestao.addActionListener(this);
+		panel.add(btnSugestao);
+		
+		lblNewLabel_5 = new JLabel("Username");
+		lblNewLabel_5.setForeground(new Color(0, 70, 67));
+		lblNewLabel_5.setFont(new Font("Caladea", Font.BOLD, 14));
+		lblNewLabel_5.setBounds(49, 245, 87, 17);
+		panel.add(lblNewLabel_5);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(240, 237, 229));
@@ -172,7 +202,7 @@ public class CadastroUserView implements ActionListener {
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setLayout(null);
 		panel_1_1.setBackground(new Color(240, 237, 229));
-		panel_1_1.setBounds(409, 198, 190, 194);
+		panel_1_1.setBounds(404, 195, 190, 252);
 		frame.getContentPane().add(panel_1_1);
 
 		btnListar = new JButton("Listar");
@@ -198,6 +228,19 @@ public class CadastroUserView implements ActionListener {
 		btnRemover.setBounds(50, 141, 127, 40);
 		btnRemover.addActionListener(this);
 		panel_1_1.add(btnRemover);
+		
+		btnResetSenha = new JButton("Reset senha");
+		btnResetSenha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resetSenhaView reset = new resetSenhaView();
+				reset.setVisible(true);
+			}
+		});
+		btnResetSenha.setForeground(new Color(240, 237, 229));
+		btnResetSenha.setFont(new Font("Caladea", Font.BOLD, 14));
+		btnResetSenha.setBackground(new Color(0, 70, 67));
+		btnResetSenha.setBounds(50, 193, 127, 40);
+		panel_1_1.add(btnResetSenha);
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(240, 237, 229));
@@ -210,11 +253,18 @@ public class CadastroUserView implements ActionListener {
 		panel_2.add(scrollPane);
 
 		table = new JTable();
+		table.setBackground(new Color(240, 237, 229));
 		table.setForeground(new Color(0, 70, 67));
 		table.setFont(new Font("Caladea", Font.BOLD, 14));
 		table.setModel(
-				new DefaultTableModel(new Object[][] {}, new String[] { "CodigoUser", "Nome", "Apelido", "Perfil" }));
+				new DefaultTableModel(new Object[][] {}, new String[] { "CodigoUser", "Nome", "Apelido","username", "Perfil" }));
 		scrollPane.setViewportView(table);
+		
+		lblUser = new JLabel("");
+		lblUser.setForeground(new Color(0, 70, 67));
+		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
+		lblUser.setBounds(532, 12, 368, 17);
+		frame.getContentPane().add(lblUser);
 
 	}
 
@@ -223,7 +273,8 @@ public class CadastroUserView implements ActionListener {
 		String nome = textNome.getText();
 		String apelido = textApelido.getText();
 		String perfil = (String) comboBoxPerfil.getSelectedItem();
-		String senha = textSenha.getText();
+		String username = textUsername.getText();
+		String senha = String.valueOf(textSenha.getPassword());
 		if (nome.isEmpty() || apelido.isEmpty() || senha.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Preencha todos os campos!!");
 			return;
@@ -232,7 +283,7 @@ public class CadastroUserView implements ActionListener {
 
 		try {
 			ControllerCadastroUser controller = new ControllerCadastroUser();
-			controller.adicionarUser(usuarioLogado.getNome(), usuarioLogado.getPerfil(), nome, apelido, perfil, senha);
+			controller.adicionarUser(usuarioLogado.getNome(), usuarioLogado.getPerfil(), nome, apelido,username, perfil, senha);
 			JOptionPane.showMessageDialog(null, perfil + " adicionado com sucesso!");
 
 			LoginView tela = new LoginView();
@@ -242,6 +293,16 @@ public class CadastroUserView implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Erro ao adicionar: " + e.getMessage());
 			e.printStackTrace();
 		}
+	}
+	
+	//gerador de username
+	private void gerarUsername() {
+		String nome = textNome.getText();
+		String apelido = textApelido.getText();
+
+		char pLetra = Character.toUpperCase(nome.charAt(0));
+		String usernameGerado = "" + pLetra + apelido;
+		textUsername.setText(usernameGerado);
 	}
 
 	// gerador de senha
@@ -259,12 +320,13 @@ public class CadastroUserView implements ActionListener {
 		textSenha.setText(senhaGerada);
 	}
 
-	// txt contendo as credencias
+	// txt com as credencias
 	private void criarCredenciais() {
 		String nome = textNome.getText();
 		String apelido = textApelido.getText();
 		String perfil = (String) comboBoxPerfil.getSelectedItem();
-		String senha = textSenha.getText();
+		String senha = String.valueOf(textSenha.getPassword());
+
 
 		try {
 			FileWriter writer = new FileWriter(nome + ".txt");
@@ -281,6 +343,11 @@ public class CadastroUserView implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Erro ao gerar senha");
 		}
 	}
+	
+	
+	
+	//reset da senha(caso o user oerca a senha)
+
 
 	// read (lista dos users)
 	public void listar() {
@@ -292,9 +359,10 @@ public class CadastroUserView implements ActionListener {
 				int codigoUser = users.getCodigoUsuario();
 				String nome = users.getNome();
 				String apelido = users.getApelido();
+				String username = users.getUsername();
 				String perfil = users.getPerfil();
 
-				listarNaTabela.addRow(new Object[] { codigoUser, nome, apelido, perfil });
+				listarNaTabela.addRow(new Object[] { codigoUser, nome, apelido,username, perfil });
 			}
 		} catch (ClassNotFoundException | SQLException e1) {
 			JOptionPane.showMessageDialog(null, "Erro ao listar" + e1.getMessage());
@@ -391,6 +459,9 @@ public class CadastroUserView implements ActionListener {
 		}
 		if (e.getSource() == btnRemover) {
 			removerUser();
+		}
+		if(e.getSource() == btnSugestao) {
+			gerarUsername();
 		}
 
 	}

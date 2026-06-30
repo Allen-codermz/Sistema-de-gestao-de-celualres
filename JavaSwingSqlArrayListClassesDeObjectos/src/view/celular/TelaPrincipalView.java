@@ -18,6 +18,8 @@ public class TelaPrincipalView {
 
 	private JFrame frame;
 	
+	private JLabel lblUser;
+	
 	private CadastroUser usuarioLogado;
 	
 	private JButton btnGerirUsers,btnAcessarLogs,btnGestaoDeFabricante;
@@ -33,7 +35,12 @@ public class TelaPrincipalView {
 		this.usuarioLogado=usuario;
 		initialize();
 		confirmarPermissoes();
+		
+		if(usuario != null) {
+			lblUser.setText("Usuario: "+ usuarioLogado.getNome()+" | "+"Perfil: "+usuarioLogado.getPerfil());
+		}
 	}
+	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -200,18 +207,32 @@ public class TelaPrincipalView {
 		btnAcessarLogs.setBackground(new Color(0, 70, 67));
 		btnAcessarLogs.setBounds(1227, 53, 124, 48);
 		panel.add(btnAcessarLogs);
+		
+		lblUser = new JLabel("");
+		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
+		lblUser.setForeground(new Color(0, 70, 67));
+		lblUser.setBounds(746, 16, 368, 17);
+		panel.add(lblUser);
 	}
+	
+//	public  TelaPrincipalView(CadastroUser usuarioLogado) {
+//		this();
+//		this.usuarioLogado = usuarioLogado;
+//		if(userlogado != null) {
+//			lblUser.setText("Usuario: "+ usuarioLogado.getNome()+" "+usuarioLogado.getApelido()+" "+"Perfil: "+usuarioLogado.getPerfil());
+//		}
+//	}
 	
 	public void confirmarPermissoes() {
 		if (usuarioLogado ==null) return;
 		
 		String perfil = usuarioLogado.getPerfil();
 		switch (perfil) {
-		case "user": 
+		case "User": 
 			btnGerirUsers.setEnabled(false);
 			btnAcessarLogs.setEnabled(false);
 			break;
-		case "superuser":
+		case "superUser":
 			btnGerirUsers.setEnabled(false);
 			btnAcessarLogs.setEnabled(false);
 			break;

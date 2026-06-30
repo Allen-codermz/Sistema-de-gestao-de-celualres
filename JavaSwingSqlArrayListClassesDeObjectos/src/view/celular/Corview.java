@@ -19,9 +19,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import controller.celular.ControllerCor;
+import controller.celular.CorApiService;
 import model.celular.CadastroUser;
 import model.celular.Cor;
 
@@ -36,11 +38,11 @@ public class Corview implements ActionListener, MouseListener {
 	private JButton btnNewButton_1;
 	private JPanel panel_1;
 	private CadastroUser usuarioLogado;
+	private JLabel lblUser;
 
 	/**
 	 * Launch the application.
 	 */
-	
 
 	/**
 	 * Create the application.
@@ -49,6 +51,10 @@ public class Corview implements ActionListener, MouseListener {
 		this.usuarioLogado = usuario;
 		initialize();
 		confirmarPermissoes();
+		if(usuario != null) {
+			lblUser.setText("Usuario: "+ usuarioLogado.getNome()+" | "+"Perfil: "+usuarioLogado.getPerfil());
+		}
+	
 	}
 
 	/**
@@ -125,7 +131,7 @@ public class Corview implements ActionListener, MouseListener {
 		btnAdicionar.setBackground(new Color(0, 70, 67));
 		btnAdicionar.setBounds(49, 67, 130, 48);
 		panel.add(btnAdicionar);
-		
+
 		panel_1 = new JPanel();
 		panel_1.setBounds(293, 10, 34, 43);
 		panel.add(panel_1);
@@ -146,7 +152,7 @@ public class Corview implements ActionListener, MouseListener {
 		table.setForeground(new Color(0, 70, 67));
 		scrollPane.setViewportView(table);
 		table.addMouseListener(this);
-		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "CodigoCor", "Cor" }));
+		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "CodigoCor", "Cor", "Descricao" }));
 		table.setBackground(new Color(240, 237, 229));
 
 		btnNewButton_1 = new JButton("Tela Principal");
@@ -161,6 +167,12 @@ public class Corview implements ActionListener, MouseListener {
 		btnNewButton_1.setBackground(new Color(0, 70, 67));
 		btnNewButton_1.setBounds(1198, 27, 127, 38);
 		frame.getContentPane().add(btnNewButton_1);
+		
+		lblUser = new JLabel("");
+		lblUser.setForeground(new Color(0, 70, 67));
+		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
+		lblUser.setBounds(625, 12, 368, 17);
+		frame.getContentPane().add(lblUser);
 	}
 
 	public void confirmarPermissoes() {
@@ -168,7 +180,7 @@ public class Corview implements ActionListener, MouseListener {
 			return;
 		String perfil = usuarioLogado.getPerfil();
 
-		if (perfil.equals("user")) {
+		if (perfil.equals("User")) {
 			btnEditar.setEnabled(false);
 			btnRemover.setEnabled(false);
 		}
@@ -178,8 +190,9 @@ public class Corview implements ActionListener, MouseListener {
 		JColorChooser collorChoser = new JColorChooser();
 		Color color = JColorChooser.showDialog(null, "Selecione uma cor", Color.white);
 		if (color != null) {
-			panel_1.setBackground(color);;
-			
+			panel_1.setBackground(color);
+			;
+
 			String colorHex = String.format("#%02X%02X%02X", color.getRed(), color.getGreen(), color.getBlue());
 			textCorHex.setText(colorHex);
 		}
@@ -193,7 +206,6 @@ public class Corview implements ActionListener, MouseListener {
 			return;
 		}
 
-		
 		try {
 			ControllerCor controller = new ControllerCor();
 			controller.adicionarCor(usuarioLogado.getNome(), usuarioLogado.getPerfil(), cor);
@@ -214,11 +226,13 @@ public class Corview implements ActionListener, MouseListener {
 			for (Cor cor : listaDeCores) {
 				int codigoCor = cor.getCodigoCor();
 				String nomeMarca = cor.getCor();
+				String descricao = cor.getDescricao();
 
-				listarNaTabela.addRow(new Object[] { codigoCor, nomeMarca });
+				listarNaTabela.addRow(new Object[] { codigoCor, nomeMarca, descricao });
 			}
+
 		} catch (ClassNotFoundException | SQLException e1) {
-			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(null, "Erro ao listar: " + e1.getMessage());
 			e1.printStackTrace();
 		}
 	}
@@ -230,11 +244,15 @@ public class Corview implements ActionListener, MouseListener {
 			return;
 		}
 		String cor = textCorHex.getText();
+		if (cor.isEmpty()) {
+			JOptionPane.showMessageDialog(null,"Por favor selecione uma nova cor primeiro!!");
+			return;
+		}
 		try {
 			int codigoCor = (int) table.getValueAt(linhaSeleccionada, 0);
 			ControllerCor controller = new ControllerCor();
 			controller.actualizarCor(usuarioLogado.getNome(), usuarioLogado.getPerfil(), codigoCor, cor);
-			JOptionPane.showMessageDialog(null, "Marca editada com sucesso!");
+			JOptionPane.showMessageDialog(null, "Cor editada com sucesso!");
 			limparCaixas();
 			limparTabela();
 			listar();
@@ -255,9 +273,9 @@ public class Corview implements ActionListener, MouseListener {
 			ControllerCor controller = new ControllerCor();
 			controller.removerCor(usuarioLogado.getNome(), usuarioLogado.getPerfil(), codigoCor);
 			JOptionPane.showMessageDialog(null, "Cor removida com sucesso!");
-			//limparCaixas();
+			// limparCaixas();
 			limparTabela();
-			//listar();
+			// listar();
 
 		} catch (SQLException ex) {
 			JOptionPane.showMessageDialog(null, "Erro ao remover: " + ex.getMessage());

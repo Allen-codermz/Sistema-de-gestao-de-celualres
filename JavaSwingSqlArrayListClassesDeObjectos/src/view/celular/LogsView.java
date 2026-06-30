@@ -30,6 +30,7 @@ public class LogsView {
 	private JButton btnNewButton;
 
 	private CadastroUser usuarioLogado;
+	private JLabel lblUser;
 
 	/**
 	 * Launch the application.
@@ -46,6 +47,9 @@ public class LogsView {
 		this.usuarioLogado = usuario;
 		initialize();
 		listar();
+		if(usuario != null) {
+			lblUser.setText("Usuario: "+ usuarioLogado.getNome()+" | "+"Perfil: "+usuarioLogado.getPerfil());
+		}
 	}
 
 	public void setVisible(boolean visible) {
@@ -105,6 +109,12 @@ public class LogsView {
 		btnNewButton.setBackground(new Color(0, 70, 67));
 		btnNewButton.setBounds(1215, 32, 136, 38);
 		frame.getContentPane().add(btnNewButton);
+		
+		lblUser = new JLabel("");
+		lblUser.setForeground(new Color(0, 70, 67));
+		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
+		lblUser.setBounds(562, 19, 298, 17);
+		frame.getContentPane().add(lblUser);
 	}
 
 	public void listar() {

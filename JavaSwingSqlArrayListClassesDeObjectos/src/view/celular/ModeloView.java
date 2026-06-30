@@ -21,8 +21,11 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import controller.celular.ControllerModelo;
+import controller.celular.Controllermarca;
 import model.celular.CadastroUser;
+import model.celular.Marca;
 import model.celular.Modelo;
+import javax.swing.JComboBox;
 
 public class ModeloView implements ActionListener, MouseListener {
 
@@ -32,7 +35,11 @@ public class ModeloView implements ActionListener, MouseListener {
 	private JButton btnAdicionar, btnListar, btnEditar, btnRemover;
 	private JTable table;
 	private CadastroUser usuarioLogado;
+	
+	private ArrayList<Marca> listaDeMarcas = new ArrayList<>();
 
+	private JLabel lblUser;
+	private JComboBox comboBoxMarca;
 	/**
 	 * Launch the application.
 	 */
@@ -44,7 +51,12 @@ public class ModeloView implements ActionListener, MouseListener {
 	public ModeloView(CadastroUser usuario) {
 		this.usuarioLogado = usuario;
 		initialize();
+		carregarMarca();
 		confirmarPermissoes();
+		if(usuario != null) {
+			lblUser.setText("Usuario: "+ usuarioLogado.getNome()+" | "+"Perfil: "+usuarioLogado.getPerfil());
+		}
+	
 	}
 
 	public void setVisible(boolean visible) {
@@ -63,23 +75,36 @@ public class ModeloView implements ActionListener, MouseListener {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 237, 229));
-		panel.setBounds(65, 83, 333, 101);
+		panel.setBounds(65, 83, 333, 129);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
 		JLabel lblNewLabel = new JLabel("Modelo:");
 		lblNewLabel.setForeground(new Color(0, 70, 67));
 		lblNewLabel.setFont(new Font("Caladea", Font.BOLD, 16));
-		lblNewLabel.setBounds(61, 43, 109, 17);
+		lblNewLabel.setBounds(12, 108, 78, 17);
 		panel.add(lblNewLabel);
 
 		textModelo = new JTextField();
 		textModelo.setForeground(new Color(0, 70, 67));
 		textModelo.setFont(new Font("Caladea", Font.BOLD, 14));
 		textModelo.setBackground(new Color(240, 237, 229));
-		textModelo.setBounds(167, 34, 133, 38);
+		textModelo.setBounds(108, 87, 192, 38);
 		panel.add(textModelo);
 		textModelo.setColumns(10);
+		
+		JLabel lblMarca = new JLabel("Marca:");
+		lblMarca.setForeground(new Color(0, 70, 67));
+		lblMarca.setFont(new Font("Caladea", Font.BOLD, 16));
+		lblMarca.setBounds(12, 38, 78, 17);
+		panel.add(lblMarca);
+		
+		comboBoxMarca = new JComboBox();
+		comboBoxMarca.setForeground(new Color(0, 70, 67));
+		comboBoxMarca.setFont(new Font("Caladea", Font.BOLD, 14));
+		comboBoxMarca.setBackground(new Color(240, 237, 229));
+		comboBoxMarca.setBounds(108, 17, 190, 38);
+		panel.add(comboBoxMarca);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(240, 237, 229));
@@ -133,7 +158,7 @@ public class ModeloView implements ActionListener, MouseListener {
 		table.setBackground(new Color(240, 237, 229));
 		table.setFont(new Font("Caladea", Font.BOLD, 14));
 		table.setForeground(new Color(0, 70, 67));
-		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "CodigoModelo", "Modelo" }));
+		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "CodigoModelo", "Modelo", "Marca" }));
 		scrollPane.setViewportView(table);
 
 		JPanel panel_3 = new JPanel();
@@ -160,7 +185,29 @@ public class ModeloView implements ActionListener, MouseListener {
 		btnNewButton.setBackground(new Color(0, 70, 67));
 		btnNewButton.setBounds(1210, 29, 127, 38);
 		frame.getContentPane().add(btnNewButton);
+		
+		lblUser = new JLabel("");
+		lblUser.setForeground(new Color(0, 70, 67));
+		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
+		lblUser.setBounds(560, 6, 368, 17);
+		frame.getContentPane().add(lblUser);
 	}
+	
+	private void carregarMarca() {
+
+		comboBoxMarca.removeAllItems();
+		listaDeMarcas.clear();
+		try {
+			Controllermarca controller = new Controllermarca();
+			listaDeMarcas = controller.listaDeMarcas();
+			for (Marca marca : listaDeMarcas) {
+				comboBoxMarca.addItem(marca.getMarca());
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 	private void adicionarModelo() {
 		String modelo = textModelo.getText();
@@ -204,7 +251,7 @@ public class ModeloView implements ActionListener, MouseListener {
 			return;
 		String perfil = usuarioLogado.getPerfil();
 
-		if (perfil.equals("user")) {
+		if (perfil.equals("User")) {
 			btnEditar.setEnabled(false);
 			btnRemover.setEnabled(false);
 		}

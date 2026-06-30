@@ -29,6 +29,8 @@ public class MarcaView implements ActionListener, MouseListener {
 	private JFrame frameMarca;
 	private JTextField textMarca;
 	private JTable table;
+	
+	private JLabel lblUser;
 
 	private JButton btnAdicionar, btnListar, btnEditar, btnRemover;
 
@@ -46,6 +48,10 @@ public class MarcaView implements ActionListener, MouseListener {
 		this.usuarioLogado = usuario;
 		initialize();
 		confirmarPermissoes();
+		if(usuario != null) {
+			lblUser.setText("Usuario: "+ usuarioLogado.getNome()+" | "+"Perfil: "+usuarioLogado.getPerfil());
+		}
+	
 	}
 
 	public void setVisible(boolean visible) {
@@ -143,14 +149,14 @@ public class MarcaView implements ActionListener, MouseListener {
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(240, 237, 229));
-		panel_3.setBounds(194, 28, 805, 35);
+		panel_3.setBounds(526, 28, 473, 35);
 		frameMarca.getContentPane().add(panel_3);
 		panel_3.setLayout(null);
 
 		JLabel lblNewLabel_1 = new JLabel("Cadastro de Marca");
 		lblNewLabel_1.setForeground(new Color(0, 70, 67));
 		lblNewLabel_1.setFont(new Font("Caladea", Font.BOLD, 30));
-		lblNewLabel_1.setBounds(419, 12, 297, 24);
+		lblNewLabel_1.setBounds(78, 12, 297, 24);
 		panel_3.add(lblNewLabel_1);
 
 		JButton btnNewButton = new JButton("Tela Principal");
@@ -165,6 +171,12 @@ public class MarcaView implements ActionListener, MouseListener {
 		btnNewButton.setBackground(new Color(0, 70, 67));
 		btnNewButton.setBounds(1223, 28, 136, 38);
 		frameMarca.getContentPane().add(btnNewButton);
+		
+		lblUser = new JLabel("");
+		lblUser.setForeground(new Color(0, 70, 67));
+		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
+		lblUser.setBounds(624, 14, 368, 17);
+		frameMarca.getContentPane().add(lblUser);
 	}
 //nivel de acesso
 	public void confirmarPermissoes() {
@@ -172,7 +184,7 @@ public class MarcaView implements ActionListener, MouseListener {
 			return;
 		String perfil = usuarioLogado.getPerfil();
 
-		if (perfil.equals("user")) {
+		if (perfil.equals("User")) {
 			btnEditar.setEnabled(false);
 			btnRemover.setEnabled(false);
 		}

@@ -10,8 +10,8 @@ public class ControllerCelular {
 	private DaoCelular dao = new DaoCelular();
 	private ControllerLog log = new ControllerLog();
 
-	public void adicionarCelular(String usuario,String perfil, double preco, int anoDeFabrico) throws SQLException {
-		dao.adicionarCelular( preco, anoDeFabrico);
+	public void adicionarCelular(String usuario,String perfil,int codigoMarca,int codigoModelo,int codigoCor,int  codigoFabricante, double preco, int anoDeFabrico) throws SQLException {
+		dao.adicionarCelular(codigoMarca,codigoModelo,codigoCor,codigoFabricante, preco, anoDeFabrico);
 		log.registarLog(usuario, perfil, "Adicionou um celular");
 	}
 

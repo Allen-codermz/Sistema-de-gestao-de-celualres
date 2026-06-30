@@ -5,6 +5,7 @@ public class CadastroUser {
 	private int codigoUsuario;
 	private String nome;
 	private String apelido;
+	private String username;
 	private String perfil;
 	private String senha;
 	
@@ -12,11 +13,12 @@ public class CadastroUser {
 		
 	}
 
-	public CadastroUser(int codigoUsuario, String nome, String apelido, String perfil, String senha) {
+	public CadastroUser(int codigoUsuario, String nome, String apelido, String username,String perfil, String senha) {
 	
 		this.codigoUsuario = codigoUsuario;
 		this.nome = nome;
 		this.apelido = apelido;
+		this.username = username;
 		this.perfil = perfil;
 		this.senha = senha;
 	}
@@ -45,6 +47,14 @@ public class CadastroUser {
 
 	public void setApelido(String apelido) {
 		this.apelido = apelido;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPerfil() {

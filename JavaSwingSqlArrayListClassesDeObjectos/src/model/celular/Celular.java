@@ -1,22 +1,17 @@
 package model.celular;
 
-public class Celular implements Comparable<Celular>{
+public class Celular implements Comparable<Celular> {
 	private int codigo;
 	private Marca marca;
+	private Modelo modelo;
+	private Cor cor;
 	private double preco;
 	private Fabricante fabricante;
 	private int anoDeFabrico;
-	
 
 	public Celular(int codigo, double preco, int anoDeFabrico) {
 
 		this.codigo = codigo;
-		this.preco = preco;
-		this.anoDeFabrico = anoDeFabrico;
-	}
-
-	public Celular(String referencia, double preco, int anoDeFabrico) {
-		
 		this.preco = preco;
 		this.anoDeFabrico = anoDeFabrico;
 	}
@@ -35,6 +30,22 @@ public class Celular implements Comparable<Celular>{
 
 	public void setMarca(Marca marca) {
 		this.marca = marca;
+	}
+
+	public Modelo getModelo() {
+		return modelo;
+	}
+
+	public void setModelo(Modelo modelo) {
+		this.modelo = modelo;
+	}
+
+	public Cor getCor() {
+		return cor;
+	}
+
+	public void setCor(Cor cor) {
+		this.cor = cor;
 	}
 
 	public double getPreco() {
@@ -67,8 +78,8 @@ public class Celular implements Comparable<Celular>{
 	}
 
 	public String toString() {
-		return codigo + "-" + marca.getMarca() +  "-" + preco + "-" + fabricante.getFabricante() + "-" + anoDeFabrico + "-"
-				+ "-" + calcularTempo();
+		return codigo + "-" + marca.getMarca() + "-" + preco + "-" + fabricante.getFabricante() + "-" + anoDeFabrico
+				+ "-" + "-" + calcularTempo();
 	}
 
 	public int compareTo(Celular celular) {
