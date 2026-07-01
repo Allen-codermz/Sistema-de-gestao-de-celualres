@@ -72,7 +72,7 @@ public class LoginView implements ActionListener {
 		panel_1.add(lblNewLabel);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(532, 215, 309, 474);
+		panel.setBounds(521, 134, 309, 475);
 		panel.setBackground(new Color(240, 237, 229));
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
