@@ -63,10 +63,10 @@ public class TelaPrincipalView {
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("SISTEMA");
+		JLabel lblNewLabel_1 = new JLabel("''SISTEMA");
 		lblNewLabel_1.setFont(new Font("Caladea", Font.BOLD, 60));
 		lblNewLabel_1.setForeground(new Color(240, 237, 229));
-		lblNewLabel_1.setBounds(253, 69, 280, 127);
+		lblNewLabel_1.setBounds(217, 87, 280, 127);
 		panel_2.add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("DE");
@@ -81,10 +81,10 @@ public class TelaPrincipalView {
 		lblNewLabel_3.setBounds(253, 284, 244, 102);
 		panel_2.add(lblNewLabel_3);
 		
-		JLabel lblNewLabel_5 = new JLabel("CELULARES");
+		JLabel lblNewLabel_5 = new JLabel("CELULARES''");
 		lblNewLabel_5.setFont(new Font("Caladea", Font.BOLD, 60));
 		lblNewLabel_5.setForeground(new Color(240, 237, 229));
-		lblNewLabel_5.setBounds(217, 495, 336, 64);
+		lblNewLabel_5.setBounds(207, 496, 376, 64);
 		panel_2.add(lblNewLabel_5);
 		
 		JLabel lblNewLabel_2_1 = new JLabel("DE");

@@ -75,7 +75,7 @@ public class ModeloView implements ActionListener, MouseListener {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 237, 229));
-		panel.setBounds(65, 83, 333, 129);
+		panel.setBounds(31, 234, 333, 129);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -108,7 +108,7 @@ public class ModeloView implements ActionListener, MouseListener {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(240, 237, 229));
-		panel_1.setBounds(93, 217, 293, 241);
+		panel_1.setBounds(507, 163, 293, 241);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
@@ -146,7 +146,7 @@ public class ModeloView implements ActionListener, MouseListener {
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(240, 237, 229));
-		panel_2.setBounds(447, 104, 678, 194);
+		panel_2.setBounds(348, 471, 678, 194);
 		frame.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 
@@ -211,15 +211,16 @@ public class ModeloView implements ActionListener, MouseListener {
 
 	private void adicionarModelo() {
 		String modelo = textModelo.getText();
+		int codigoMarca = listaDeMarcas.get(comboBoxMarca.getSelectedIndex()).getCodigoMarca();
 
 		if (modelo.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Por favor preencha o campo");
 			return;
 		}
-
+	
 		ControllerModelo controller = new ControllerModelo();
 		try {
-			controller.adicionarModelo(usuarioLogado.getNome(), usuarioLogado.getPerfil(), modelo);
+			controller.adicionarModelo(usuarioLogado.getNome(), usuarioLogado.getPerfil(), modelo,codigoMarca);
 			JOptionPane.showMessageDialog(null, "Modelo adicionado com sucesso!");
 			limparCaixas();
 			limparTabela();
@@ -237,8 +238,9 @@ public class ModeloView implements ActionListener, MouseListener {
 			for (Modelo modelo : listaDeModelos) {
 				int codigo = modelo.getCodigoModelo();
 				String nomeModelo = modelo.getModelo();
+				Marca marca = modelo.getMarca();
 
-				listarNaTabela.addRow(new Object[] { codigo, nomeModelo });
+				listarNaTabela.addRow(new Object[] { codigo, nomeModelo, marca });
 			}
 		} catch (ClassNotFoundException | SQLException e1) {
 			JOptionPane.showMessageDialog(null, "Erro ao listar" + e1.getMessage());

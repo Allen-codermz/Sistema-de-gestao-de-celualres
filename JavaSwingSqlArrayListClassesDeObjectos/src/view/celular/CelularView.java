@@ -201,12 +201,12 @@ public class CelularView implements ActionListener, MouseListener {
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(240, 237, 229));
-		panel_2.setBounds(49, 475, 1210, 203);
+		panel_2.setBounds(49, 476, 1342, 203);
 		frameCelular.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 1188, 181);
+		scrollPane.setBounds(12, 12, 1261, 181);
 		panel_2.add(scrollPane);
 
 		tableCelular = new JTable();
@@ -360,7 +360,7 @@ public class CelularView implements ActionListener, MouseListener {
 				double preco = celular.getPreco();
 				int anoDeFabrico = celular.getAnoDeFabrico();
 				int tempoDeExistencia = celular.calcularTempo();
-				listarNaTabela.addRow(new Object[] { codigo,marca,modelo,fabricante,cor, preco, anoDeFabrico, tempoDeExistencia });
+				listarNaTabela.addRow(new Object[] { codigo,marca,modelo,cor,fabricante, preco, anoDeFabrico, tempoDeExistencia });
 			}
 		} catch (ClassNotFoundException | SQLException e1) {
 

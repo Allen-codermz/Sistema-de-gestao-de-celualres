@@ -1,7 +1,6 @@
 package view.celular;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,10 +21,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import controller.celular.ControllerCadastroUser;
-import controller.celular.ControllerModelo;
 import model.celular.CadastroUser;
 import javax.swing.JScrollPane;
-import javax.swing.JScrollBar;
 import javax.swing.JTable;
 import javax.swing.JPasswordField;
 
@@ -76,7 +73,7 @@ public class CadastroUserView implements ActionListener {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 237, 229));
-		panel.setBounds(49, 110, 353, 513);
+		panel.setBounds(49, 115, 353, 543);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -202,7 +199,7 @@ public class CadastroUserView implements ActionListener {
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setLayout(null);
 		panel_1_1.setBackground(new Color(240, 237, 229));
-		panel_1_1.setBounds(404, 195, 190, 252);
+		panel_1_1.setBounds(512, 158, 230, 252);
 		frame.getContentPane().add(panel_1_1);
 
 		btnListar = new JButton("Listar");
@@ -241,30 +238,30 @@ public class CadastroUserView implements ActionListener {
 		btnResetSenha.setBackground(new Color(0, 70, 67));
 		btnResetSenha.setBounds(50, 193, 127, 40);
 		panel_1_1.add(btnResetSenha);
-
-		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(240, 237, 229));
-		panel_2.setBounds(670, 212, 672, 194);
-		frame.getContentPane().add(panel_2);
-		panel_2.setLayout(null);
-
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 12, 622, 171);
-		panel_2.add(scrollPane);
-
-		table = new JTable();
-		table.setBackground(new Color(240, 237, 229));
-		table.setForeground(new Color(0, 70, 67));
-		table.setFont(new Font("Caladea", Font.BOLD, 14));
-		table.setModel(
-				new DefaultTableModel(new Object[][] {}, new String[] { "CodigoUser", "Nome", "Apelido","username", "Perfil" }));
-		scrollPane.setViewportView(table);
 		
 		lblUser = new JLabel("");
 		lblUser.setForeground(new Color(0, 70, 67));
 		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
 		lblUser.setBounds(532, 12, 368, 17);
 		frame.getContentPane().add(lblUser);
+		
+				JPanel panel_2 = new JPanel();
+				panel_2.setBounds(448, 491, 850, 194);
+				frame.getContentPane().add(panel_2);
+				panel_2.setBackground(new Color(240, 237, 229));
+				panel_2.setLayout(null);
+				
+						JScrollPane scrollPane = new JScrollPane();
+						scrollPane.setBounds(12, 12, 826, 171);
+						panel_2.add(scrollPane);
+						
+								table = new JTable();
+								table.setBackground(new Color(240, 237, 229));
+								table.setForeground(new Color(0, 70, 67));
+								table.setFont(new Font("Caladea", Font.BOLD, 14));
+								table.setModel(
+										new DefaultTableModel(new Object[][] {}, new String[] { "CodigoUser", "Nome", "Apelido","username", "Perfil" }));
+								scrollPane.setViewportView(table);
 
 	}
 
@@ -286,8 +283,7 @@ public class CadastroUserView implements ActionListener {
 			controller.adicionarUser(usuarioLogado.getNome(), usuarioLogado.getPerfil(), nome, apelido,username, perfil, senha);
 			JOptionPane.showMessageDialog(null, perfil + " adicionado com sucesso!");
 
-			LoginView tela = new LoginView();
-			tela.setVisible(true);
+			
 
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erro ao adicionar: " + e.getMessage());

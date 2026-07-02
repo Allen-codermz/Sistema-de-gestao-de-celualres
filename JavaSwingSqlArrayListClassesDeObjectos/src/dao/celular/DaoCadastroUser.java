@@ -108,5 +108,16 @@ public class DaoCadastroUser {
 		stmt.executeUpdate();
 		con.close();
 	}
+	
+	public void alterarSenha(String username,String novaSenha) throws SQLException {
+		Connection con = Conexao.conectar();
+		PreparedStatement stmt = null;
+		stmt = con.prepareStatement("update users set senha=? where username=? ");
+		stmt.setString(1, novaSenha);
+		stmt.setString(2,username);
+		stmt.executeUpdate();
+		con.close();
+		
+	}
 
 }

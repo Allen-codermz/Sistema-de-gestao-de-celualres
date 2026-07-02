@@ -7,15 +7,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import controller.celular.Conexao;
+import model.celular.Marca;
 import model.celular.Modelo;
 
 public class DaoModelo {
 //	creat
-	public void adicionarModelo(String modelo) throws SQLException {
+	public void adicionarModelo(String modelo, int codigoMarca) throws SQLException {
 		Connection con = Conexao.conectar();
 		PreparedStatement stmt = null;
-		stmt = con.prepareStatement("insert into modelo (modelo) values(?)");
+		stmt = con.prepareStatement("insert into modelo (modelo, codigoMarca) values(?,?)");
 		stmt.setString(1, modelo);
+		stmt.setInt(2, codigoMarca);
 		stmt.executeUpdate();
 		con.close();
 
@@ -26,13 +28,20 @@ public class DaoModelo {
 		ArrayList<Modelo> modelos = new ArrayList<Modelo>();
 		PreparedStatement stmt = null;
 		Connection con = Conexao.conectar();
-		stmt = con.prepareStatement("SELECT * FROM modelo");
+		stmt = con.prepareStatement("SELECT mo.codigoModelo, mo.modelo, m.codigoMarca, m.marca " 
+		+ "FROM modelo mo "
+		+ "JOIN marca m ON mo.codigoMarca = m.codigoMarca ");
+		
 		ResultSet rs = stmt.executeQuery();
 		while (rs.next()) {
-			int codigoModelo = rs.getInt(1);
-			String modelo = rs.getString(2);
+			int codigoModelo = rs.getInt("codigoModelo");
+			String modelo1 = rs.getString("modelo");
+			Marca marca = new Marca(rs.getInt("codigoMarca"), rs.getString("marca"));
 
-			modelos.add(new Modelo(codigoModelo, modelo));
+			Modelo modelo = new Modelo(codigoModelo,modelo1);
+			modelo.setMarca(marca);
+			
+			modelos.add(modelo);
 		}
 		con.close();
 		return modelos;

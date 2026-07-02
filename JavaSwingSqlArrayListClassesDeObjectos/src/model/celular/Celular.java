@@ -79,9 +79,12 @@ public class Celular implements Comparable<Celular> {
 
 	public String toString() {
 		return codigo + "-" + marca.getMarca() + "-" + preco + "-" + fabricante.getFabricante() + "-" + anoDeFabrico
-				+ "-" + "-" + calcularTempo();
+				+ "-" + calcularTempo();
 	}
 
+	
+	
+	
 	public int compareTo(Celular celular) {
 		if (this.codigo > celular.codigo)
 			return 1;

@@ -1,6 +1,6 @@
 package model.celular;
 
-public class Fabricante{
+public class Fabricante {
 	private int codigoFabricante;
 	private String fabricante;
 	private String paisDeOrigem;
@@ -42,6 +42,11 @@ public class Fabricante{
 
 	public void setPaisDeOrigem(String paisDeOrigem) {
 		this.paisDeOrigem = paisDeOrigem;
+	}
+
+	@Override
+	public String toString() {
+		return fabricante + "-" + paisDeOrigem;
 	}
 
 }

@@ -12,7 +12,7 @@ public class ControllerCadastroUser {
 	private DaoCadastroUser dao = new DaoCadastroUser();
 	private ControllerLog log = new ControllerLog();
 
-	public void adicionarUser(String nomeAd ,String perfilAd,String nome, String apelido,String username, String perfil,String senha) throws SQLException {
+	public void adicionarUser(String nomeAd,String perfilAd,String nome, String apelido,String username, String perfil,String senha) throws SQLException {
 		
 		dao.adicionarUser(nome, apelido,username, perfil, senha);
 		log.registarLog(nomeAd, perfilAd, "Adicionou um usuario com o perfil de "+perfil);
@@ -30,5 +30,10 @@ public class ControllerCadastroUser {
 	public void removerUser(String nomeAd ,String perfilAd,int codigoUser) throws SQLException {
 		dao.removerUser(codigoUser);
 		log.registarLog(nomeAd, perfilAd, "Removeu um user com o codigo "+codigoUser);
+	}
+	
+	public void alterarSenha(String username,String perfil, String novaSenha) throws SQLException {
+		dao.alterarSenha(username,novaSenha);
+		log.registarLog(username,perfil,"Alterou a sua senha");
 	}
 }

@@ -70,7 +70,7 @@ public class MarcaView implements ActionListener, MouseListener {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 237, 229));
-		panel.setBounds(58, 143, 344, 90);
+		panel.setBounds(70, 234, 344, 90);
 		frameMarca.getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -90,7 +90,7 @@ public class MarcaView implements ActionListener, MouseListener {
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(240, 237, 229));
-		panel_1.setBounds(97, 265, 286, 216);
+		panel_1.setBounds(599, 123, 286, 216);
 		frameMarca.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
@@ -128,7 +128,7 @@ public class MarcaView implements ActionListener, MouseListener {
 
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(240, 237, 229));
-		panel_2.setBounds(553, 126, 656, 188);
+		panel_2.setBounds(399, 474, 656, 188);
 		frameMarca.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 

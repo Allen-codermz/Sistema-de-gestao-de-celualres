@@ -67,13 +67,13 @@ public class LogsView {
 		frame.getContentPane().setLayout(null);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(234, 276, 972, 223);
+		panel_2.setBounds(23, 280, 1294, 223);
 		panel_2.setBackground(new Color(240, 237, 229));
 		frame.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(33, 32, 863, 154);
+		scrollPane.setBounds(33, 32, 1230, 154);
 		panel_2.add(scrollPane);
 
 		table = new JTable();

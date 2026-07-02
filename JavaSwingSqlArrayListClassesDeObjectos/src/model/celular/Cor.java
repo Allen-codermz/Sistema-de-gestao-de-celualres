@@ -42,4 +42,11 @@ public class Cor {
 		this.descricao = descricao;
 	}
 
+	@Override
+	public String toString() {
+		return  cor + "-" + descricao;
+	}
+	
+	
+
 }

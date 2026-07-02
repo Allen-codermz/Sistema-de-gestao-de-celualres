@@ -29,4 +29,9 @@ public class Marca {
 		this.marca = marca;
 	}
 
+	@Override
+	public String toString() {
+		return  marca;
+	}
+
 }

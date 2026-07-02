@@ -9,8 +9,8 @@ import model.celular.Modelo;
 public class ControllerModelo {
 	private DaoModelo dao = new DaoModelo();
 	private ControllerLog log = new ControllerLog();
-	public void adicionarModelo(String usuario,String perfil,String modelo) throws SQLException {
-		dao.adicionarModelo(modelo);
+	public void adicionarModelo(String usuario,String perfil,String modelo,int codigoMarca) throws SQLException {
+		dao.adicionarModelo(modelo,codigoMarca);
 		log.registarLog(usuario, perfil,"Adicionou um modelo");
 	}
 

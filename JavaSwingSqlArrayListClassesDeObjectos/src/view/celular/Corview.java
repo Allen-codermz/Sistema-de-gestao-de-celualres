@@ -80,26 +80,10 @@ public class Corview implements ActionListener, MouseListener {
 		lblNewLabel.setFont(new Font("Caladea", Font.BOLD, 30));
 
 		JPanel panel = new JPanel();
-		panel.setBounds(50, 208, 379, 345);
+		panel.setBounds(660, 114, 227, 341);
 		panel.setBackground(new Color(240, 237, 229));
 		frame.getContentPane().add(panel);
-
-		btnSelecionar = new JButton("Selicionar Cor");
-		btnSelecionar.setBounds(49, 7, 130, 48);
-		btnSelecionar.setFont(new Font("Caladea", Font.BOLD, 14));
-		btnSelecionar.setForeground(new Color(240, 237, 229));
-		btnSelecionar.setBackground(new Color(0, 70, 67));
-		btnSelecionar.addActionListener(this);
 		panel.setLayout(null);
-		panel.add(btnSelecionar);
-
-		textCorHex = new JTextField();
-		textCorHex.setForeground(new Color(0, 70, 67));
-		textCorHex.setFont(new Font("Caladea", Font.BOLD, 14));
-		textCorHex.setBounds(191, 10, 103, 43);
-		textCorHex.setEditable(false);
-		panel.add(textCorHex);
-		textCorHex.setColumns(10);
 
 		btnListar = new JButton("Listar");
 		btnListar.setBounds(49, 127, 130, 48);
@@ -131,14 +115,10 @@ public class Corview implements ActionListener, MouseListener {
 		btnAdicionar.setBackground(new Color(0, 70, 67));
 		btnAdicionar.setBounds(49, 67, 130, 48);
 		panel.add(btnAdicionar);
-
-		panel_1 = new JPanel();
-		panel_1.setBounds(293, 10, 34, 43);
-		panel.add(panel_1);
 		btnAdicionar.addActionListener(this);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(515, 221, 682, 233);
+		panel_2.setBounds(367, 498, 682, 233);
 		panel_2.setBackground(new Color(240, 237, 229));
 		panel_2.setLayout(null);
 		frame.getContentPane().add(panel_2);
@@ -173,6 +153,26 @@ public class Corview implements ActionListener, MouseListener {
 		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
 		lblUser.setBounds(625, 12, 368, 17);
 		frame.getContentPane().add(lblUser);
+		
+				btnSelecionar = new JButton("Selicionar Cor");
+				btnSelecionar.setBounds(83, 232, 130, 48);
+				frame.getContentPane().add(btnSelecionar);
+				btnSelecionar.setFont(new Font("Caladea", Font.BOLD, 14));
+				btnSelecionar.setForeground(new Color(240, 237, 229));
+				btnSelecionar.setBackground(new Color(0, 70, 67));
+				
+						textCorHex = new JTextField();
+						textCorHex.setBounds(225, 232, 127, 48);
+						frame.getContentPane().add(textCorHex);
+						textCorHex.setForeground(new Color(0, 70, 67));
+						textCorHex.setFont(new Font("Caladea", Font.BOLD, 14));
+						textCorHex.setEditable(false);
+						textCorHex.setColumns(10);
+						
+								panel_1 = new JPanel();
+								panel_1.setBounds(353, 232, 59, 48);
+								frame.getContentPane().add(panel_1);
+				btnSelecionar.addActionListener(this);
 	}
 
 	public void confirmarPermissoes() {

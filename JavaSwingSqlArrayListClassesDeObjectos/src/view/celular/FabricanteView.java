@@ -80,7 +80,7 @@ public class FabricanteView implements ActionListener, MouseListener {
 		lblNewLabel.setFont(new Font("Caladea", Font.BOLD, 30));
 
 		JPanel panel = new JPanel();
-		panel.setBounds(53, 88, 384, 183);
+		panel.setBounds(45, 257, 384, 183);
 		panel.setBackground(new Color(240, 237, 229));
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -114,7 +114,7 @@ public class FabricanteView implements ActionListener, MouseListener {
 		textFabricante.setColumns(10);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(79, 345, 277, 250);
+		panel_1.setBounds(610, 190, 277, 250);
 		panel_1.setBackground(new Color(240, 237, 229));
 		frame.getContentPane().add(panel_1);
 
@@ -152,7 +152,7 @@ public class FabricanteView implements ActionListener, MouseListener {
 		panel_1.add(btnRemover);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(524, 276, 682, 223);
+		panel_2.setBounds(388, 457, 682, 223);
 		panel_2.setBackground(new Color(240, 237, 229));
 		frame.getContentPane().add(panel_2);
 		panel_2.setLayout(null);
