@@ -16,12 +16,13 @@ public class DaoCadastroUser {
 	public void adicionarUser(String nome, String apelido,String username, String perfil, String senha) throws SQLException {
 		Connection con = Conexao.conectar();
 		PreparedStatement stmt = null;
-		stmt = con.prepareStatement("insert into users (nome, apelido,username, perfil, senha) values(?,?,?,?,?)");
+		stmt = con.prepareStatement("insert into users (nome, apelido,username, perfil, senha, senhaInicial) values(?,?,?,?,?,?)");
 		stmt.setString(1, nome);
 		stmt.setString(2, apelido);
 		stmt.setString(3, username);
 		stmt.setString(4, perfil);
 		stmt.setString(5, senha);
+		stmt.setString(6, senha);
 		stmt.executeUpdate();
 		con.close();
 	}
@@ -97,14 +98,28 @@ public class DaoCadastroUser {
 		}
 		return null;
 	}
-
-	public void resetarSenha(String nome, String apelido, String novaSenha) throws SQLException {
+	//este metodo e responsavel por buscar/encontrar a senha Incial de cada user
+	public String encontrarSenhaInicial(String username) throws SQLException {
 		Connection con = Conexao.conectar();
 		PreparedStatement stmt = null;
-		stmt = con.prepareStatement("update users set senha=? where nome=? and apelido=?");
-		stmt.setString(1, novaSenha);
-		stmt.setString(2,nome);
-		stmt.setString(3, apelido);
+		stmt = con.prepareStatement("Select senhaInicial from users where username = ?");
+		stmt.setString(1, username);
+		ResultSet rs = stmt.executeQuery();
+		String senhaInicial = null;
+		if(rs.next()) {
+			senhaInicial = rs.getString("senhaInicial");
+		}
+		con.close();
+		return senhaInicial;
+		
+	}
+	
+	//reset da senha, depois de ser encontrado este metodo devolve a senha INCIAL (retornar a senha padrao do ususario)
+	public void resetarSenha(String username) throws SQLException {
+		Connection con = Conexao.conectar();
+		PreparedStatement stmt = null;
+		stmt = con.prepareStatement("update users set senha = senhaInicial where username = ?");
+		stmt.setString(1, username);
 		stmt.executeUpdate();
 		con.close();
 	}

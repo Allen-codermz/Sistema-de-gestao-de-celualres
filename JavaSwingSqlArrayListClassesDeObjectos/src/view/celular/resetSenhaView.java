@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.celular.ControllerCadastroUser;
+import controller.celular.ControllerLog;
 import controller.celular.Controllermarca;
 import dao.celular.DaoCadastroUser;
 import model.celular.CadastroUser;
@@ -35,7 +36,7 @@ public class resetSenhaView implements ActionListener {
 	private JComboBox comboBoxPerfil;
 
 	private ArrayList<CadastroUser> listaDeUsers = new ArrayList<>();
-
+	private CadastroUser usuarioLogado;
 	private JButton btnResetarSenha;
 
 	/**
@@ -115,6 +116,18 @@ public class resetSenhaView implements ActionListener {
 		lblResetDeSenha.setFont(new Font("Caladea", Font.BOLD, 30));
 		lblResetDeSenha.setBounds(63, 0, 234, 36);
 		panel_3.add(lblResetDeSenha);
+		
+		JButton btnFechar = new JButton("Fechar");
+		btnFechar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
+		btnFechar.setForeground(new Color(240, 237, 229));
+		btnFechar.setFont(new Font("Caladea", Font.BOLD, 14));
+		btnFechar.setBackground(new Color(0, 70, 67));
+		btnFechar.setBounds(423, 25, 82, 45);
+		frame.getContentPane().add(btnFechar);
 
 	}
 
@@ -125,7 +138,7 @@ public class resetSenhaView implements ActionListener {
 			ControllerCadastroUser controller = new ControllerCadastroUser();
 			listaDeUsers = controller.listaDeUsers();
 			for (CadastroUser user : listaDeUsers) {
-				comboBoxUsers.addItem(user.getNome());
+				comboBoxUsers.addItem(user.getUsername());
 			}
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
@@ -133,17 +146,28 @@ public class resetSenhaView implements ActionListener {
 	}
 
 	private void resetarSenha() {
-		String nome = (String) comboBoxUsers.getSelectedItem();
-
-		char pLetra = Character.toUpperCase(nome.charAt(0));
-		Random random = new Random();
-		int n1 = random.nextInt(10);
-		int n2 = random.nextInt(10);
-		int n3 = random.nextInt(10);
-
-		String senhaGerada = "" + pLetra + n1 + n2 + n3;
-
-		frame.dispose();
+		String username = (String) comboBoxUsers.getSelectedItem();
+		if(username == null) {
+			JOptionPane.showMessageDialog(null,"Por favor selecione um username");
+			return;
+		}
+		try {
+			DaoCadastroUser user = new DaoCadastroUser();
+			String senhaInicial = user.encontrarSenhaInicial(username);
+			if(senhaInicial == null || senhaInicial.isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Não foi encontrada uma senha inicial para este usuario!");
+				return;
+			}
+			user.resetarSenha(username);
+			if(usuarioLogado != null) {
+				ControllerLog log = new ControllerLog();
+				log.registarLog(usuarioLogado.getNome(), usuarioLogado.getPerfil(), "Resetou a senha do usuario "+ username +" para a senha padrão");
+			}
+			JOptionPane.showMessageDialog(null, "Senha resetada comm sucesso!!");
+			frame.dispose();
+		}catch (SQLException ex) {
+			JOptionPane.showMessageDialog(null, "Erro ao resetar senha "+ ex.getMessage());
+		}
 	}
 
 	public void setVisible(boolean visible) {
@@ -158,5 +182,4 @@ public class resetSenhaView implements ActionListener {
 		}
 
 	}
-
 }
