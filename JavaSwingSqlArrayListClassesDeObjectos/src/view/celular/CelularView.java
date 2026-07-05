@@ -44,7 +44,7 @@ public class CelularView implements ActionListener, MouseListener {
 	private CadastroUser usuarioLogado;
 
 	private JLabel lblUser;
-	
+
 	private ArrayList<Marca> listaDeMarcas = new ArrayList<>();
 	private ArrayList<Cor> listaDeCores = new ArrayList<>();
 	private ArrayList<Modelo> listaDeModelos = new ArrayList<>();
@@ -65,8 +65,8 @@ public class CelularView implements ActionListener, MouseListener {
 		carregarModelo();
 		carregarFabricante();
 		carregarCor();
-		if(usuario != null) {
-			lblUser.setText("Usuario: "+ usuarioLogado.getNome()+" | "+"Perfil: "+usuarioLogado.getPerfil());
+		if (usuario != null) {
+			lblUser.setText("Usuario: " + usuarioLogado.getNome() + " | " + "Perfil: " + usuarioLogado.getPerfil());
 		}
 	}
 
@@ -149,12 +149,12 @@ public class CelularView implements ActionListener, MouseListener {
 		comboBoxFabricante.setBackground(new Color(240, 237, 229));
 		comboBoxFabricante.setBounds(159, 216, 179, 35);
 		panel.add(comboBoxFabricante);
-		
+
 		comboBoxModelo = new JComboBox();
 		comboBoxModelo.setBackground(new Color(240, 237, 229));
 		comboBoxModelo.setBounds(159, 81, 179, 35);
 		panel.add(comboBoxModelo);
-		
+
 		JLabel lblModelo = new JLabel("Modelo");
 		lblModelo.setForeground(new Color(0, 70, 67));
 		lblModelo.setFont(new Font("Caladea", Font.BOLD, 16));
@@ -215,7 +215,7 @@ public class CelularView implements ActionListener, MouseListener {
 		tableCelular.addMouseListener(this);
 		scrollPane.setViewportView(tableCelular);
 		tableCelular.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Numero de Serie", "Marca",
-				"Modelo", "Cor","Fabricante", "Preco", "Ano de Fabrico", "Tempo de Existencia" }));
+				"Modelo", "Cor", "Fabricante", "Preco", "Ano de Fabrico", "Tempo de Existencia" }));
 		tableCelular.setBackground(new Color(240, 237, 229));
 
 		JPanel panel_3 = new JPanel();
@@ -242,7 +242,7 @@ public class CelularView implements ActionListener, MouseListener {
 		btnNewButton.setBackground(new Color(0, 70, 67));
 		btnNewButton.setBounds(1222, 39, 127, 38);
 		frameCelular.getContentPane().add(btnNewButton);
-		
+
 		lblUser = new JLabel("");
 		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
 		lblUser.setForeground(new Color(0, 70, 67));
@@ -264,7 +264,7 @@ public class CelularView implements ActionListener, MouseListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void carregarCor() {
 
 		comboBoxCor.removeAllItems();
@@ -272,14 +272,14 @@ public class CelularView implements ActionListener, MouseListener {
 		try {
 			ControllerCor controller = new ControllerCor();
 			listaDeCores = controller.listaDeCores();
-			for (Cor cor: listaDeCores) {
-				comboBoxCor.addItem(cor.getCor()+" - "+ cor.getDescricao());
+			for (Cor cor : listaDeCores) {
+				comboBoxCor.addItem(cor.getCor() + " - " + cor.getDescricao());
 			}
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void carregarModelo() {
 
 		comboBoxModelo.removeAllItems();
@@ -294,7 +294,7 @@ public class CelularView implements ActionListener, MouseListener {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void carregarFabricante() {
 
 		comboBoxFabricante.removeAllItems();
@@ -303,7 +303,7 @@ public class CelularView implements ActionListener, MouseListener {
 			ControllerFabricante controller = new ControllerFabricante();
 			listaDeFabricantes = controller.listaDeFabricantes();
 			for (Fabricante fabricante : listaDeFabricantes) {
-				comboBoxFabricante.addItem(fabricante.getPaisDeOrigem()+" - "+fabricante.getFabricante());
+				comboBoxFabricante.addItem(fabricante.getPaisDeOrigem() + " - " + fabricante.getFabricante());
 			}
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
@@ -322,17 +322,18 @@ public class CelularView implements ActionListener, MouseListener {
 		try {
 			double preco = Double.parseDouble(preco1);
 			if (preco <= 0) {
-				JOptionPane.showMessageDialog(null, "O preco deve ser menor que zero!!");
+				JOptionPane.showMessageDialog(null, "O preco deve ser maior que zero!!");
+				return;
 			}
 			int anoDeFabrico = Integer.parseInt((String) comboBoxAnoDeFabrico.getSelectedItem());
 			int codigoMarca = listaDeMarcas.get(comboBoxMarca.getSelectedIndex()).getCodigoMarca();
 			int codigoModelo = listaDeModelos.get(comboBoxModelo.getSelectedIndex()).getCodigoModelo();
 			int codigoCor = listaDeCores.get(comboBoxCor.getSelectedIndex()).getCodigoCor();
 			int codigoFabricante = listaDeFabricantes.get(comboBoxFabricante.getSelectedIndex()).getCodigoFabricante();
-			
 
 			ControllerCelular controller = new ControllerCelular();
-			controller.adicionarCelular(usuarioLogado.getNome(), usuarioLogado.getPerfil(), codigoMarca,codigoModelo,codigoCor,codigoFabricante, preco, anoDeFabrico);
+			controller.adicionarCelular(usuarioLogado.getNome(), usuarioLogado.getPerfil(), codigoMarca, codigoModelo,
+					codigoCor, codigoFabricante, preco, anoDeFabrico);
 
 			JOptionPane.showMessageDialog(null, "Celular adicionado com sucesso!");
 			limparCaixas();
@@ -360,7 +361,8 @@ public class CelularView implements ActionListener, MouseListener {
 				double preco = celular.getPreco();
 				int anoDeFabrico = celular.getAnoDeFabrico();
 				int tempoDeExistencia = celular.calcularTempo();
-				listarNaTabela.addRow(new Object[] { codigo,marca,modelo,cor,fabricante, preco, anoDeFabrico, tempoDeExistencia });
+				listarNaTabela.addRow(new Object[] { codigo, marca, modelo, cor, fabricante, preco, anoDeFabrico,
+						tempoDeExistencia });
 			}
 		} catch (ClassNotFoundException | SQLException e1) {
 
@@ -373,7 +375,7 @@ public class CelularView implements ActionListener, MouseListener {
 			return;
 		String perfil = usuarioLogado.getPerfil();
 
-		if (perfil.equals("User")) {
+		if (perfil.equals("Operador")) {
 			btnEditar.setEnabled(false);
 			btnRemover.setEnabled(false);
 		}
@@ -402,7 +404,8 @@ public class CelularView implements ActionListener, MouseListener {
 			limparCaixas();
 			limparTabela();
 			listar();
-
+		} catch (NumberFormatException ex) {
+			JOptionPane.showMessageDialog(null, "Preco invalido, numeros apenas!!");
 		} catch (SQLException ex) {
 			JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex.getMessage());
 		}

@@ -217,6 +217,10 @@ public class ModeloView implements ActionListener, MouseListener {
 			JOptionPane.showMessageDialog(null, "Por favor preencha o campo");
 			return;
 		}
+		if(comboBoxMarca.getSelectedIndex() == -1) {
+			JOptionPane.showMessageDialog(null, "Por favor cadastre uma marca primeiro!!");
+			return;
+		}
 	
 		ControllerModelo controller = new ControllerModelo();
 		try {
@@ -253,7 +257,7 @@ public class ModeloView implements ActionListener, MouseListener {
 			return;
 		String perfil = usuarioLogado.getPerfil();
 
-		if (perfil.equals("User")) {
+		if (perfil.equals("Operador")) {
 			btnEditar.setEnabled(false);
 			btnRemover.setEnabled(false);
 		}
@@ -266,6 +270,10 @@ public class ModeloView implements ActionListener, MouseListener {
 			return;
 		}
 		String modelo = textModelo.getText();
+		if(modelo.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Por favor preencha o campo!");
+			return;
+		}
 		try {
 			int codigoModelo = (int) table.getValueAt(linhaSeleccionada, 0);
 			ControllerModelo controller = new ControllerModelo();

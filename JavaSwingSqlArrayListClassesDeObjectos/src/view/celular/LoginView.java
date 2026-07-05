@@ -25,6 +25,7 @@ public class LoginView implements ActionListener {
 	private JPasswordField passwordSenha;
 
 	private JButton btnIniciarSessao;
+	private CadastroUser ususarioLogado;
 
 	/**
 	 * Launch the application.
@@ -33,7 +34,7 @@ public class LoginView implements ActionListener {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LoginView window = new LoginView();
+					LoginView window = new LoginView(null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +46,8 @@ public class LoginView implements ActionListener {
 	/**
 	 * Create the application.
 	 */
-	public LoginView() {
+	public LoginView(CadastroUser usuario) {
+		this.ususarioLogado = usuario;
 		initialize();
 	}
 

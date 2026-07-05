@@ -180,7 +180,7 @@ public class Corview implements ActionListener, MouseListener {
 			return;
 		String perfil = usuarioLogado.getPerfil();
 
-		if (perfil.equals("User")) {
+		if (perfil.equals("Operador")) {
 			btnEditar.setEnabled(false);
 			btnRemover.setEnabled(false);
 		}

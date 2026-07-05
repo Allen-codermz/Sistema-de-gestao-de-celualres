@@ -86,7 +86,9 @@ public class DaoCadastroUser {
 
 				CadastroUser user = new CadastroUser();
 				user.setCodigoUsuario(rs.getInt("codigoUser"));
-				user.setNome(rs.getString("username"));
+				user.setNome(rs.getString("nome"));
+				user.setApelido(rs.getString("apelido"));
+				user.setUsername(rs.getString("username"));
 				user.setPerfil(rs.getString("perfil"));
 				user.setSenha(rs.getString("senha"));
 

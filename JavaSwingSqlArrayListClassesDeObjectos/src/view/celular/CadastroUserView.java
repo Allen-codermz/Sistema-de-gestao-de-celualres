@@ -48,18 +48,16 @@ public class CadastroUserView implements ActionListener {
 	 * Launch the application.
 	 */
 
-
 	/**
 	 * Create the application.
 	 */
 	public CadastroUserView(CadastroUser usuario) {
 		this.usuarioLogado = usuario;
 		initialize();
-		if(usuario != null) {
-			lblUser.setText("Usuario: "+ usuarioLogado.getNome()+" | "+"Perfil: "+usuarioLogado.getPerfil());
+		if (usuario != null) {
+			lblUser.setText("Usuario: " + usuarioLogado.getNome() + " | " + "Perfil: " + usuarioLogado.getPerfil());
 		}
 	}
-	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -143,12 +141,13 @@ public class CadastroUserView implements ActionListener {
 
 		comboBoxPerfil = new JComboBox();
 		comboBoxPerfil.setFont(new Font("Caladea", Font.BOLD, 16));
-		comboBoxPerfil.setModel(new DefaultComboBoxModel(new String[] { "User", "superUser", "administrador", "auditor" }));
+		comboBoxPerfil.setModel(
+				new DefaultComboBoxModel(new String[] { "Operador", "SuperOperador", "Administrador", "Auditor" }));
 		comboBoxPerfil.setForeground(new Color(0, 70, 67));
 		comboBoxPerfil.setBackground(new Color(240, 237, 229));
 		comboBoxPerfil.setBounds(49, 170, 239, 44);
 		panel.add(comboBoxPerfil);
-		
+
 		textUsername = new JTextField();
 		textUsername.setFont(new Font("Caladea", Font.PLAIN, 14));
 		textUsername.setForeground(new Color(0, 70, 67));
@@ -156,7 +155,7 @@ public class CadastroUserView implements ActionListener {
 		textUsername.setBackground(new Color(240, 237, 229));
 		textUsername.setBounds(49, 261, 114, 43);
 		panel.add(textUsername);
-		
+
 		btnSugestao = new JButton("Sugestão");
 		btnSugestao.setForeground(new Color(240, 237, 229));
 		btnSugestao.setFont(new Font("Caladea", Font.BOLD, 14));
@@ -164,7 +163,7 @@ public class CadastroUserView implements ActionListener {
 		btnSugestao.setBounds(166, 261, 122, 43);
 		btnSugestao.addActionListener(this);
 		panel.add(btnSugestao);
-		
+
 		lblNewLabel_5 = new JLabel("Username");
 		lblNewLabel_5.setForeground(new Color(0, 70, 67));
 		lblNewLabel_5.setFont(new Font("Caladea", Font.BOLD, 14));
@@ -225,7 +224,7 @@ public class CadastroUserView implements ActionListener {
 		btnRemover.setBounds(50, 141, 127, 40);
 		btnRemover.addActionListener(this);
 		panel_1_1.add(btnRemover);
-		
+
 		btnResetSenha = new JButton("Reset senha");
 		btnResetSenha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -238,30 +237,30 @@ public class CadastroUserView implements ActionListener {
 		btnResetSenha.setBackground(new Color(0, 70, 67));
 		btnResetSenha.setBounds(50, 193, 127, 40);
 		panel_1_1.add(btnResetSenha);
-		
+
 		lblUser = new JLabel("");
 		lblUser.setForeground(new Color(0, 70, 67));
 		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
 		lblUser.setBounds(532, 12, 368, 17);
 		frame.getContentPane().add(lblUser);
-		
-				JPanel panel_2 = new JPanel();
-				panel_2.setBounds(448, 491, 850, 194);
-				frame.getContentPane().add(panel_2);
-				panel_2.setBackground(new Color(240, 237, 229));
-				panel_2.setLayout(null);
-				
-						JScrollPane scrollPane = new JScrollPane();
-						scrollPane.setBounds(12, 12, 826, 171);
-						panel_2.add(scrollPane);
-						
-								table = new JTable();
-								table.setBackground(new Color(240, 237, 229));
-								table.setForeground(new Color(0, 70, 67));
-								table.setFont(new Font("Caladea", Font.BOLD, 14));
-								table.setModel(
-										new DefaultTableModel(new Object[][] {}, new String[] { "CodigoUser", "Nome", "Apelido","username", "Perfil" }));
-								scrollPane.setViewportView(table);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(448, 491, 850, 194);
+		frame.getContentPane().add(panel_2);
+		panel_2.setBackground(new Color(240, 237, 229));
+		panel_2.setLayout(null);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(12, 12, 826, 171);
+		panel_2.add(scrollPane);
+
+		table = new JTable();
+		table.setBackground(new Color(240, 237, 229));
+		table.setForeground(new Color(0, 70, 67));
+		table.setFont(new Font("Caladea", Font.BOLD, 14));
+		table.setModel(new DefaultTableModel(new Object[][] {},
+				new String[] { "CodigoUser", "Nome", "Apelido", "username", "Perfil" }));
+		scrollPane.setViewportView(table);
 
 	}
 
@@ -272,7 +271,7 @@ public class CadastroUserView implements ActionListener {
 		String perfil = (String) comboBoxPerfil.getSelectedItem();
 		String username = textUsername.getText();
 		String senha = String.valueOf(textSenha.getPassword());
-		if (nome.isEmpty() || apelido.isEmpty() || senha.isEmpty()) {
+		if (nome.isEmpty() || apelido.isEmpty() || username.isEmpty() || senha.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Preencha todos os campos!!");
 			return;
 
@@ -280,21 +279,25 @@ public class CadastroUserView implements ActionListener {
 
 		try {
 			ControllerCadastroUser controller = new ControllerCadastroUser();
-			controller.adicionarUser(usuarioLogado.getNome(), usuarioLogado.getPerfil(), nome, apelido,username, perfil, senha);
+			controller.adicionarUser(usuarioLogado.getNome(), usuarioLogado.getPerfil(), nome, apelido, username,
+					perfil, senha);
 			JOptionPane.showMessageDialog(null, perfil + " adicionado com sucesso!");
-
-			
 
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erro ao adicionar: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}
-	
-	//gerador de username
+
+	// gerador de username
 	private void gerarUsername() {
 		String nome = textNome.getText();
 		String apelido = textApelido.getText();
+
+		if (nome.isEmpty() || apelido.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Por favor preencha o nome e apelido primeiro!!");
+			return;
+		}
 
 		char pLetra = Character.toUpperCase(nome.charAt(0));
 		String usernameGerado = "" + pLetra + apelido;
@@ -306,6 +309,11 @@ public class CadastroUserView implements ActionListener {
 		String nome = textNome.getText();
 		String apelido = textApelido.getText();
 
+		if (nome.isEmpty() || apelido.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Por favor preencha o nome e apelido primeiro!!");
+			return;
+		}
+
 		char pLetra = Character.toUpperCase(nome.charAt(0));
 		Random random = new Random();
 		int n1 = random.nextInt(10);
@@ -314,6 +322,7 @@ public class CadastroUserView implements ActionListener {
 
 		String senhaGerada = "" + pLetra + apelido + n1 + n2 + n3;
 		textSenha.setText(senhaGerada);
+		JOptionPane.showMessageDialog(null, "Senha gerada com sucesso!!");
 	}
 
 	// txt com as credencias
@@ -322,7 +331,6 @@ public class CadastroUserView implements ActionListener {
 		String apelido = textApelido.getText();
 		String perfil = (String) comboBoxPerfil.getSelectedItem();
 		String senha = String.valueOf(textSenha.getPassword());
-
 
 		try {
 			FileWriter writer = new FileWriter(nome + ".txt");
@@ -333,17 +341,12 @@ public class CadastroUserView implements ActionListener {
 
 			writer.close();
 
-			JOptionPane.showMessageDialog(null, "Senha gerada com sucesso!!");
-
 		} catch (IOException ex) {
 			JOptionPane.showMessageDialog(null, "Erro ao gerar senha");
 		}
 	}
-	
-	
-	
-	//reset da senha(caso o user oerca a senha)
 
+	// reset da senha(caso o user oerca a senha)
 
 	// read (lista dos users)
 	public void listar() {
@@ -358,7 +361,7 @@ public class CadastroUserView implements ActionListener {
 				String username = users.getUsername();
 				String perfil = users.getPerfil();
 
-				listarNaTabela.addRow(new Object[] { codigoUser, nome, apelido,username, perfil });
+				listarNaTabela.addRow(new Object[] { codigoUser, nome, apelido, username, perfil });
 			}
 		} catch (ClassNotFoundException | SQLException e1) {
 			JOptionPane.showMessageDialog(null, "Erro ao listar" + e1.getMessage());
@@ -441,10 +444,11 @@ public class CadastroUserView implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnCadastrar) {
 			cadastrar();
+			criarCredenciais();
 		}
 		if (e.getSource() == btnGerarSenha) {
 			gerarSenha();
-			criarCredenciais();
+
 		}
 		if (e.getSource() == btnListar) {
 			limparTabela();
@@ -456,7 +460,7 @@ public class CadastroUserView implements ActionListener {
 		if (e.getSource() == btnRemover) {
 			removerUser();
 		}
-		if(e.getSource() == btnSugestao) {
+		if (e.getSource() == btnSugestao) {
 			gerarUsername();
 		}
 

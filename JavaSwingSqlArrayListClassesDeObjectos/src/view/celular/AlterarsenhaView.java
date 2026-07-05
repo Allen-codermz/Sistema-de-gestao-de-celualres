@@ -29,6 +29,8 @@ public class AlterarsenhaView implements ActionListener {
 	private JPasswordField passwordSenhaAntiga;
 	
 	private JButton btnAlterarSenha;
+	
+	private CadastroUser usuarioLogado;
 
 	/**
 	 * Launch the application.
@@ -125,7 +127,7 @@ public class AlterarsenhaView implements ActionListener {
 		JButton btnTelaPrincipal = new JButton("Voltar");
 		btnTelaPrincipal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				LoginView login = new LoginView();
+				LoginView login = new LoginView(usuarioLogado);
 				login.setVisible(true);
 			}
 		});

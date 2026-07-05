@@ -178,13 +178,13 @@ public class MarcaView implements ActionListener, MouseListener {
 		lblUser.setBounds(624, 14, 368, 17);
 		frameMarca.getContentPane().add(lblUser);
 	}
-//nivel de acesso
+	//nivel de acesso
 	public void confirmarPermissoes() {
 		if (usuarioLogado == null)
 			return;
 		String perfil = usuarioLogado.getPerfil();
 
-		if (perfil.equals("User")) {
+		if (perfil.equals("Operador")) {
 			btnEditar.setEnabled(false);
 			btnRemover.setEnabled(false);
 		}
@@ -234,6 +234,10 @@ public class MarcaView implements ActionListener, MouseListener {
 			return;
 		}
 		String marca = textMarca.getText();
+		if(marca.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Por favor preencha o campo!!");
+			return;
+		}
 		try {
 			int codigoMarca = (int) table.getValueAt(linhaSeleccionada, 0);
 			Controllermarca controller = new Controllermarca();

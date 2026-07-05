@@ -194,7 +194,7 @@ public class FabricanteView implements ActionListener, MouseListener {
 		if(usuarioLogado == null)return;
 		String perfil = usuarioLogado.getPerfil();
 		
-		if(perfil.equals("User")) {
+		if(perfil.equals("Operador")) {
 			btnEditar.setEnabled(false);
 			btnRemover.setEnabled(false);
 		}
@@ -247,6 +247,10 @@ public class FabricanteView implements ActionListener, MouseListener {
 		}
 		String marca = textFabricante.getText();
 		String paisDeOrigem = textPaisDeOrigem.getText();
+		if(marca.isEmpty() || paisDeOrigem.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Por favor preencha os campos!");
+			return;
+		}
 
 		ControllerFabricante controller = new ControllerFabricante();
 		try {
@@ -307,6 +311,7 @@ public class FabricanteView implements ActionListener, MouseListener {
 
 	public void limparCaixas() {
 		textFabricante.setText("");
+		textPaisDeOrigem.setText("");
 	}
 
 	public void mouseClicked(MouseEvent e) {
