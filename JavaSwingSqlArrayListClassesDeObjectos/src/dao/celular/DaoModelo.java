@@ -30,7 +30,8 @@ public class DaoModelo {
 		Connection con = Conexao.conectar();
 		stmt = con.prepareStatement("SELECT mo.codigoModelo, mo.modelo, m.codigoMarca, m.marca " 
 		+ "FROM modelo mo "
-		+ "JOIN marca m ON mo.codigoMarca = m.codigoMarca ");
+		+ "JOIN marca m ON mo.codigoMarca = m.codigoMarca "
+		+"ORDER BY mo.codigoModelo ASC");
 		
 		ResultSet rs = stmt.executeQuery();
 		while (rs.next()) {

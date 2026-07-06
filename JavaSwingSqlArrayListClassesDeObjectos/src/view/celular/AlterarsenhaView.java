@@ -179,7 +179,7 @@ public class AlterarsenhaView implements ActionListener {
 		String senhaAntiga = String.valueOf(passwordSenhaAntiga.getPassword());
 		String senhaNova = String.valueOf(passwordSenhaNova.getPassword());
 		
-		if(username.isEmpty() || senhaAntiga.isEmpty()|| senhaNova.isEmpty()) {
+		if(username.isEmpty() || senhaAntiga.isEmpty()|| senhaNova.isEmpty() || username.isBlank() || senhaAntiga.isBlank()|| senhaNova.isBlank()) {
 			JOptionPane.showMessageDialog(null, "Preencha todos os campos!!");
 			return;
 		}
@@ -217,5 +217,9 @@ public class AlterarsenhaView implements ActionListener {
 		if(e.getSource()==btnAlterarSenha) {
 			alterarSenha();
 		}
+	}
+
+	public void setVisible(boolean visible) {
+	frame.setVisible(visible);
 	}
 }

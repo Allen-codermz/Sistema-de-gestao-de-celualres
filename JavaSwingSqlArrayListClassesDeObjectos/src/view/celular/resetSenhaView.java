@@ -22,6 +22,8 @@ import java.awt.Font;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -72,14 +74,14 @@ public class resetSenhaView implements ActionListener {
 		comboBoxUsers.setFont(new Font("Caladea", Font.BOLD, 14));
 		comboBoxUsers.setForeground(new Color(0, 70, 67));
 		comboBoxUsers.setBackground(new Color(240, 237, 229));
-		comboBoxUsers.setBounds(71, 27, 174, 46);
+		comboBoxUsers.setBounds(71, 105, 174, 46);
 		panel.add(comboBoxUsers);
 
 		JLabel lblNewLabel_1 = new JLabel("Nome usuario");
 		lblNewLabel_1.setForeground(new Color(0, 70, 67));
 		lblNewLabel_1.setFont(new Font("Caladea", Font.BOLD, 14));
 		lblNewLabel_1.setBackground(new Color(0, 70, 67));
-		lblNewLabel_1.setBounds(75, 5, 103, 17);
+		lblNewLabel_1.setBounds(75, 85, 103, 17);
 		panel.add(lblNewLabel_1);
 
 		btnResetarSenha = new JButton("Resetar senha");
@@ -91,18 +93,23 @@ public class resetSenhaView implements ActionListener {
 		panel.add(btnResetarSenha);
 
 		comboBoxPerfil = new JComboBox();
-		comboBoxPerfil.setModel(new DefaultComboBoxModel(new String[] { "user", "superUser", "admin", "auditor" }));
+		comboBoxPerfil.setModel(new DefaultComboBoxModel(new String[] { "Operador", "SuperOperador", "Administrador", "Auditor" }));
 		comboBoxPerfil.setFont(new Font("Caladea", Font.BOLD, 14));
 		comboBoxPerfil.setForeground(new Color(0, 70, 67));
 		comboBoxPerfil.setBackground(new Color(240, 237, 229));
-		comboBoxPerfil.setBounds(71, 101, 174, 46);
+		comboBoxPerfil.setBounds(70, 25, 174, 46);
+		comboBoxPerfil.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			filtrarUsers();
+		}
+		});
 		panel.add(comboBoxPerfil);
 
 		JLabel lblNewLabel_1_1 = new JLabel("Perfil usuario");
 		lblNewLabel_1_1.setForeground(new Color(0, 70, 67));
 		lblNewLabel_1_1.setFont(new Font("Caladea", Font.BOLD, 14));
 		lblNewLabel_1_1.setBackground(new Color(0, 70, 67));
-		lblNewLabel_1_1.setBounds(75, 81, 138, 17);
+		lblNewLabel_1_1.setBounds(71, 10, 103, 17);
 		panel.add(lblNewLabel_1_1);
 
 		JPanel panel_3 = new JPanel();
@@ -131,17 +138,24 @@ public class resetSenhaView implements ActionListener {
 
 	}
 
-	private void carregarUsers() {
-		comboBoxUsers.removeAllItems();
+	private void carregarUsers() {	
 		listaDeUsers.clear();
 		try {
 			ControllerCadastroUser controller = new ControllerCadastroUser();
 			listaDeUsers = controller.listaDeUsers();
-			for (CadastroUser user : listaDeUsers) {
-				comboBoxUsers.addItem(user.getUsername());
-			}
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
+		}
+		filtrarUsers();
+	}
+	
+	private void filtrarUsers() {
+		String perfil = (String) comboBoxPerfil.getSelectedItem();
+		comboBoxUsers.removeAllItems();
+		for(CadastroUser users : listaDeUsers) {
+			if(perfil != null && perfil.equals(users.getPerfil())) {
+				comboBoxUsers.addItem(users.getUsername());
+			}
 		}
 	}
 
@@ -169,6 +183,24 @@ public class resetSenhaView implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Erro ao resetar senha "+ ex.getMessage());
 		}
 	}
+	
+	private void criarCredenciais() {
+		String perfil = (String) comboBoxPerfil.getSelectedItem();
+		String username = (String) comboBoxUsers.getSelectedItem();
+
+		try {
+			FileWriter writer = new FileWriter(username + ".txt");
+
+			writer.write("Nome:" + username + "\n");
+			writer.write("Perfil:" + perfil + "\n");
+
+			writer.close();
+
+		} catch (IOException ex) {
+			JOptionPane.showMessageDialog(null, "Erro ao gerar senha");
+		}
+	}
+
 
 	public void setVisible(boolean visible) {
 		frame.setVisible(visible);
@@ -178,7 +210,7 @@ public class resetSenhaView implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnResetarSenha) {
-			resetarSenha();
+			resetarSenha();criarCredenciais();
 		}
 
 	}

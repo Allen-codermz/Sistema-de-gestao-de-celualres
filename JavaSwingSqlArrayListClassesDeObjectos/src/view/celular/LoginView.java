@@ -25,7 +25,7 @@ public class LoginView implements ActionListener {
 	private JPasswordField passwordSenha;
 
 	private JButton btnIniciarSessao;
-	private CadastroUser ususarioLogado;
+	private CadastroUser usuarioLogado;
 
 	/**
 	 * Launch the application.
@@ -47,7 +47,7 @@ public class LoginView implements ActionListener {
 	 * Create the application.
 	 */
 	public LoginView(CadastroUser usuario) {
-		this.ususarioLogado = usuario;
+		this.usuarioLogado = usuario;
 		initialize();
 	}
 
@@ -114,7 +114,7 @@ public class LoginView implements ActionListener {
 		btnIniciarSessao.setBounds(12, 382, 138, 45);
 		btnIniciarSessao.addActionListener(this);
 		panel.add(btnIniciarSessao);
-		
+
 		JButton btnAlterarSenha = new JButton("Alterar senha");
 		btnAlterarSenha.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -127,37 +127,37 @@ public class LoginView implements ActionListener {
 		btnAlterarSenha.setBackground(new Color(0, 70, 67));
 		btnAlterarSenha.setBounds(162, 382, 138, 45);
 		panel.add(btnAlterarSenha);
-		
+
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
 		panel_2.setBackground(new Color(0, 70, 67));
 		panel_2.setBounds(12, 27, 741, 654);
 		frame.getContentPane().add(panel_2);
-		
+
 		JLabel lblNewLabel_1_1 = new JLabel("''EFICIÊNCIA  EM");
 		lblNewLabel_1_1.setForeground(new Color(240, 237, 229));
 		lblNewLabel_1_1.setFont(new Font("Caladea", Font.BOLD, 60));
 		lblNewLabel_1_1.setBounds(12, 69, 521, 127);
 		panel_2.add(lblNewLabel_1_1);
-		
+
 		JLabel lblNewLabel_2_1 = new JLabel("CADA CADASTRO,");
 		lblNewLabel_2_1.setForeground(new Color(240, 237, 229));
 		lblNewLabel_2_1.setFont(new Font("Caladea", Font.BOLD, 60));
 		lblNewLabel_2_1.setBounds(72, 194, 511, 78);
 		panel_2.add(lblNewLabel_2_1);
-		
+
 		JLabel lblNewLabel_3 = new JLabel("CONFIANÇA EM");
 		lblNewLabel_3.setForeground(new Color(240, 237, 229));
 		lblNewLabel_3.setFont(new Font("Caladea", Font.BOLD, 60));
 		lblNewLabel_3.setBounds(185, 284, 456, 102);
 		panel_2.add(lblNewLabel_3);
-		
+
 		JLabel lblNewLabel_2_1_1 = new JLabel("CADA CONSULTA''");
 		lblNewLabel_2_1_1.setForeground(new Color(240, 237, 229));
 		lblNewLabel_2_1_1.setFont(new Font("Caladea", Font.BOLD, 60));
 		lblNewLabel_2_1_1.setBounds(230, 386, 511, 78);
 		panel_2.add(lblNewLabel_2_1_1);
-		
+
 		JLabel lblNewLabel_4 = new JLabel("Developed by Allen Dinis");
 		lblNewLabel_4.setFont(new Font("Caladea", Font.ITALIC, 10));
 		lblNewLabel_4.setForeground(new Color(240, 237, 229));
@@ -168,8 +168,8 @@ public class LoginView implements ActionListener {
 	public void iniciarSessao() {
 		String username = textUsername.getText();
 		String senha = String.valueOf(passwordSenha.getPassword());
-	
-		if(username.isEmpty() || senha.isEmpty()) {
+
+		if (username.isEmpty() || senha.isEmpty() || username.isBlank() || senha.isBlank()) {
 			JOptionPane.showMessageDialog(null, "Por favor preecha os campos");
 			return;
 		}
@@ -177,8 +177,22 @@ public class LoginView implements ActionListener {
 		CadastroUser usuario = controller.autenticaUser(username, senha);
 		if (usuario != null) {
 
+			boolean senhaPadrao = usuario.getSenhaInicial() != null && usuario.getSenha() != null
+					&& usuario.getSenha().equals(usuario.getSenhaInicial());
+		if(senhaPadrao) {
+			JOptionPane.showMessageDialog(null, "Ainda esta com a sua senha padrão, será redirecionado para um formulario para a sua alteração!");
+			
+			AlterarsenhaView reset = new AlterarsenhaView();
+			reset.setVisible(true);
+			frame.dispose();
+			return;
+		}
+		
 			TelaPrincipalView tela = new TelaPrincipalView(usuario);
 			tela.setVisible(true);
+		
+
+			
 
 		} else {
 			JOptionPane.showMessageDialog(null, "Credenciais invalida!!");
@@ -193,6 +207,6 @@ public class LoginView implements ActionListener {
 
 	public void setVisible(boolean visible) {
 		frame.setVisible(true);
-		
+
 	}
 }

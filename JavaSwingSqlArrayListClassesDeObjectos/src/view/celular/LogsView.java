@@ -132,6 +132,12 @@ public class LogsView {
 		textPesquisa.setBounds(1089, 242, 194, 38);
 		frame.getContentPane().add(textPesquisa);
 		textPesquisa.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("Pesquisar:");
+		lblNewLabel.setFont(new Font("Caladea", Font.BOLD, 18));
+		lblNewLabel.setForeground(new Color(0, 70, 67));
+		lblNewLabel.setBounds(1094, 223, 97, 17);
+		frame.getContentPane().add(lblNewLabel);
 
 		textPesquisa.getDocument().addDocumentListener(new DocumentListener() {
 			@Override

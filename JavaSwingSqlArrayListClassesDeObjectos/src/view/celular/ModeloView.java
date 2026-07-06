@@ -213,7 +213,7 @@ public class ModeloView implements ActionListener, MouseListener {
 		String modelo = textModelo.getText();
 		int codigoMarca = listaDeMarcas.get(comboBoxMarca.getSelectedIndex()).getCodigoMarca();
 
-		if (modelo.isEmpty()) {
+		if (modelo.isEmpty() || modelo.isBlank()){
 			JOptionPane.showMessageDialog(null, "Por favor preencha o campo");
 			return;
 		}
@@ -270,7 +270,7 @@ public class ModeloView implements ActionListener, MouseListener {
 			return;
 		}
 		String modelo = textModelo.getText();
-		if(modelo.isEmpty()) {
+		if(modelo.isEmpty()|| modelo.isBlank()) {
 			JOptionPane.showMessageDialog(null, "Por favor preencha o campo!");
 			return;
 		}

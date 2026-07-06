@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -271,7 +272,7 @@ public class CadastroUserView implements ActionListener {
 		String perfil = (String) comboBoxPerfil.getSelectedItem();
 		String username = textUsername.getText();
 		String senha = String.valueOf(textSenha.getPassword());
-		if (nome.isEmpty() || apelido.isEmpty() || username.isEmpty() || senha.isEmpty()) {
+		if (nome.isEmpty() || apelido.isEmpty() || username.isEmpty() || senha.isEmpty() || nome.isBlank() || apelido.isBlank() || username.isBlank()|| senha.isBlank()) {
 			JOptionPane.showMessageDialog(null, "Preencha todos os campos!!");
 			return;
 
@@ -329,13 +330,19 @@ public class CadastroUserView implements ActionListener {
 	private void criarCredenciais() {
 		String nome = textNome.getText();
 		String apelido = textApelido.getText();
+		String username = textUsername.getText();
 		String perfil = (String) comboBoxPerfil.getSelectedItem();
 		String senha = String.valueOf(textSenha.getPassword());
 
 		try {
-			FileWriter writer = new FileWriter(nome + ".txt");
+			File file = new File("Credenciais");
+			if(!file.exists()) {
+				file.mkdirs();
+			}
+			FileWriter writer = new FileWriter(new File (file,nome + ".txt"));
 
 			writer.write("Nome:" + nome + " " + apelido + "\n");
+			writer.write("Username:" + username + "\n");
 			writer.write("Perfil:" + perfil + "\n");
 			writer.write("Senha:" + senha + "\n");
 
@@ -346,7 +353,6 @@ public class CadastroUserView implements ActionListener {
 		}
 	}
 
-	// reset da senha(caso o user oerca a senha)
 
 	// read (lista dos users)
 	public void listar() {

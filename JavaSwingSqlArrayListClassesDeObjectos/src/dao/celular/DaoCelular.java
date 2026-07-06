@@ -41,7 +41,8 @@ public class DaoCelular {
 				+ "f.codigoFabricante, f.fabricante, f.paisDeOrigem " + "FROM celulares c "
 				+ "JOIN marca m ON c.codigoMarca = m.codigoMarca "
 				+ "JOIN modelo mo ON c.codigoModelo = mo.codigoModelo " + "JOIN cor co ON c.codigoCor = co.codigoCor "
-				+ "JOIN fabricante f ON c.codigoFabricante = f.codigoFabricante");
+				+ "JOIN fabricante f ON c.codigoFabricante = f.codigoFabricante " 
+				+ "ORDER BY c.numeroDeSerie ASC");
 
 		ResultSet rs = stmt.executeQuery();
 		while (rs.next()) {

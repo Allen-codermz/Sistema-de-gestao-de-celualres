@@ -8,6 +8,7 @@ public class CadastroUser {
 	private String username;
 	private String perfil;
 	private String senha;
+	private String senhaInicial;
 	
 	public CadastroUser() {
 		
@@ -71,6 +72,14 @@ public class CadastroUser {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public String getSenhaInicial() {
+		return senhaInicial;
+	}
+
+	public void setSenhaInicial(String senhaInicial) {
+		this.senhaInicial = senhaInicial;
 	}
 
 }

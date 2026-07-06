@@ -204,7 +204,7 @@ public class FabricanteView implements ActionListener, MouseListener {
 		String fabricante = textFabricante.getText();
 		String paisDeOrigem = textPaisDeOrigem.getText();
 		
-		if(fabricante.isEmpty() || paisDeOrigem.isEmpty()) {
+		if(fabricante.isEmpty() || paisDeOrigem.isEmpty() || fabricante.isBlank() || paisDeOrigem.isBlank()) {
 			JOptionPane.showMessageDialog(null, "Por favor preencha os campos" );
 			return;
 		}
@@ -245,9 +245,9 @@ public class FabricanteView implements ActionListener, MouseListener {
 			JOptionPane.showMessageDialog(null, "Por favor, selecione um fabricante na tabela!");
 			return;
 		}
-		String marca = textFabricante.getText();
+		String fabricante = textFabricante.getText();
 		String paisDeOrigem = textPaisDeOrigem.getText();
-		if(marca.isEmpty() || paisDeOrigem.isEmpty()) {
+		if(fabricante.isEmpty() || paisDeOrigem.isEmpty() || fabricante.isBlank() || paisDeOrigem.isBlank()) {
 			JOptionPane.showMessageDialog(null, "Por favor preencha os campos!");
 			return;
 		}
@@ -255,7 +255,7 @@ public class FabricanteView implements ActionListener, MouseListener {
 		ControllerFabricante controller = new ControllerFabricante();
 		try {
 			int codigoFabricante = (int) table.getValueAt(linhaSeleccionada, 0);
-			controller.actualizarFabricante(usuarioLogado.getNome(),usuarioLogado.getPerfil(),codigoFabricante, marca, paisDeOrigem);
+			controller.actualizarFabricante(usuarioLogado.getNome(),usuarioLogado.getPerfil(),codigoFabricante, fabricante, paisDeOrigem);
 			JOptionPane.showMessageDialog(null, "Fabricante atualizado com sucesso!");
 			limparCaixas();
 			limparTabela();
@@ -320,6 +320,7 @@ public class FabricanteView implements ActionListener, MouseListener {
 			DefaultTableModel linhaSelecionada = (DefaultTableModel) table.getModel();
 
 			textFabricante.setText(linhaSelecionada.getValueAt(indice, 1).toString());
+			textPaisDeOrigem.setText(linhaSelecionada.getValueAt(indice, 2).toString());
 		}
 	}
 

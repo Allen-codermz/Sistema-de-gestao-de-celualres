@@ -193,7 +193,7 @@ public class MarcaView implements ActionListener, MouseListener {
 	private void adicionarMarca() {
 		String marca = textMarca.getText();
 
-		if (marca.isEmpty()) {
+		if (marca.isEmpty()|| marca.isBlank()) {
 			JOptionPane.showMessageDialog(null, "Por favor preencha o campo");
 			return;
 		}
@@ -234,7 +234,7 @@ public class MarcaView implements ActionListener, MouseListener {
 			return;
 		}
 		String marca = textMarca.getText();
-		if(marca.isEmpty()) {
+		if(marca.isEmpty() || marca.isBlank()) {
 			JOptionPane.showMessageDialog(null, "Por favor preencha o campo!!");
 			return;
 		}

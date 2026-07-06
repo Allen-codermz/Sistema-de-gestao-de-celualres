@@ -91,6 +91,7 @@ public class DaoCadastroUser {
 				user.setUsername(rs.getString("username"));
 				user.setPerfil(rs.getString("perfil"));
 				user.setSenha(rs.getString("senha"));
+				user.setSenhaInicial(rs.getString("senhaInicial"));
 
 				return user;
 			}
@@ -100,6 +101,7 @@ public class DaoCadastroUser {
 		}
 		return null;
 	}
+	
 	//este metodo e responsavel por buscar/encontrar a senha Incial de cada user
 	public String encontrarSenhaInicial(String username) throws SQLException {
 		Connection con = Conexao.conectar();
