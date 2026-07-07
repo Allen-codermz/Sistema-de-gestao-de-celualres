@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -19,7 +20,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import controller.celular.ControllerCelular;
 import controller.celular.ControllerCor;
@@ -43,7 +48,11 @@ public class CelularView implements ActionListener, MouseListener {
 	private JButton btnAdicionar, btnListar, btnEditar, btnRemover;
 	private CadastroUser usuarioLogado;
 
+	private JTextField textPesquisa;
+
 	private JLabel lblUser;
+
+	private TableRowSorter<DefaultTableModel> sorter;
 
 	private ArrayList<Marca> listaDeMarcas = new ArrayList<>();
 	private ArrayList<Cor> listaDeCores = new ArrayList<>();
@@ -254,6 +263,46 @@ public class CelularView implements ActionListener, MouseListener {
 		lblUser.setForeground(new Color(0, 70, 67));
 		lblUser.setBounds(643, 23, 298, 17);
 		frameCelular.getContentPane().add(lblUser);
+
+		JLabel lblNewLabel = new JLabel("Pesquisar:");
+		lblNewLabel.setFont(new Font("Caladea", Font.BOLD, 18));
+		lblNewLabel.setForeground(new Color(0, 70, 67));
+		lblNewLabel.setBounds(1128, 419, 97, 17);
+		frameCelular.getContentPane().add(lblNewLabel);
+
+		textPesquisa = new JTextField();
+		textPesquisa.setFont(new Font("Caladea", Font.PLAIN, 14));
+		textPesquisa.setBackground(new Color(240, 237, 229));
+		textPesquisa.setForeground(new Color(0, 70, 67));
+		textPesquisa.setBounds(1123, 438, 194, 38);
+		frameCelular.getContentPane().add(textPesquisa);
+		textPesquisa.setColumns(10);
+		textPesquisa.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+		});
+	}
+
+	public void filtar() {
+		String texto = textPesquisa.getText();
+		if (texto.isEmpty()) {
+			sorter.setRowFilter(null);
+		} else {
+			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), 1, 2, 3, 4, 5, 6, 7, 8));
+		}
 	}
 
 	private void carregarMarca() {
@@ -310,7 +359,7 @@ public class CelularView implements ActionListener, MouseListener {
 //			}
 //		}
 //	}
-	
+
 	private void carregarFabricante() {
 
 		comboBoxFabricante.removeAllItems();
@@ -323,6 +372,17 @@ public class CelularView implements ActionListener, MouseListener {
 			}
 		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void confirmarPermissoes() {
+		if (usuarioLogado == null)
+			return;
+		String perfil = usuarioLogado.getPerfil();
+
+		if (perfil.equals("Operador")) {
+			btnEditar.setEnabled(false);
+			btnRemover.setEnabled(false);
 		}
 	}
 
@@ -354,7 +414,7 @@ public class CelularView implements ActionListener, MouseListener {
 			JOptionPane.showMessageDialog(null, "Celular adicionado com sucesso!");
 			limparCaixas();
 			limparTabela();
-			// listar();
+			listar();
 
 		} catch (NumberFormatException ex) {
 			JOptionPane.showMessageDialog(null, "Preco invalido, numeros apenas!!");
@@ -384,16 +444,11 @@ public class CelularView implements ActionListener, MouseListener {
 
 			e1.printStackTrace();
 		}
-	}
+		sorter = new TableRowSorter<DefaultTableModel>(listarNaTabela);
+		tableCelular.setRowSorter(sorter);
 
-	public void confirmarPermissoes() {
-		if (usuarioLogado == null)
-			return;
-		String perfil = usuarioLogado.getPerfil();
-
-		if (perfil.equals("Operador")) {
-			btnEditar.setEnabled(false);
-			btnRemover.setEnabled(false);
+		for (int i = 0; i < tableCelular.getColumnCount(); i++) {
+			sorter.setSortable(i, false);
 		}
 	}
 
@@ -407,7 +462,7 @@ public class CelularView implements ActionListener, MouseListener {
 		String precoStr = textPreco.getText();
 		String anoStr = (String) comboBoxAnoDeFabrico.getSelectedItem();
 
-		if(precoStr.isEmpty() | precoStr.isBlank()) {
+		if (precoStr.isEmpty() | precoStr.isBlank()) {
 			JOptionPane.showMessageDialog(null, "Por favor preencha o campo!");
 			return;
 		}
@@ -486,8 +541,33 @@ public class CelularView implements ActionListener, MouseListener {
 			int indice = tableCelular.getSelectedRow();
 			DefaultTableModel linhaSelecionada = (DefaultTableModel) tableCelular.getModel();
 
+			
+			Marca marcaDaLinha = (Marca) linhaSelecionada.getValueAt(indice, 1);
+			for (int i = 0; i < listaDeMarcas.size(); i++) {
+				if (listaDeMarcas.get(i).getCodigoMarca() == marcaDaLinha.getCodigoMarca()) {
+					comboBoxMarca.setSelectedIndex(i);
+					break;}}
+			
+			Modelo modeloDaLinha = (Modelo) linhaSelecionada.getValueAt(indice, 2);
+			for (int i = 0; i < listaDeModelos.size(); i++) {
+				if (listaDeModelos.get(i).getCodigoModelo() == modeloDaLinha.getCodigoModelo()) {
+					comboBoxModelo.setSelectedIndex(i);
+					break;}}
+			
+			Cor corDaLinha = (Cor) linhaSelecionada.getValueAt(indice, 3);
+			for (int i = 0; i < listaDeCores.size(); i++) {
+				if (listaDeCores.get(i).getCodigoCor() == corDaLinha.getCodigoCor()) {
+					comboBoxCor.setSelectedIndex(i);
+					break;}}
+			
+			Fabricante fabricanteDaLinha = (Fabricante) linhaSelecionada.getValueAt(indice, 4);
+			for (int i = 0; i < listaDeFabricantes.size(); i++) {
+				if (listaDeFabricantes.get(i).getCodigoFabricante() == fabricanteDaLinha.getCodigoFabricante()) {
+					comboBoxFabricante.setSelectedIndex(i);
+					break;}}
+			
 			textPreco.setText(linhaSelecionada.getValueAt(indice, 5).toString());
-			comboBoxAnoDeFabrico.setSelectedItem(linhaSelecionada.getValueAt(indice, 2).toString());
+
 		}
 	}
 

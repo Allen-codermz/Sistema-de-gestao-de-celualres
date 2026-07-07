@@ -9,8 +9,8 @@ public class Controllermarca {
 	private static DaoMarca dao = new DaoMarca();
 	private ControllerLog log = new ControllerLog();
 	
-	public void adicionarMarca(String usuario,String perfil,String marca) throws SQLException {
-		dao.adicionarMarca(marca);
+	public void adicionarMarca(String usuario,String perfil,String marca,int codigoFabricante) throws SQLException {
+		dao.adicionarMarca(marca,codigoFabricante);
 		log.registarLog(usuario, perfil,"Adicionou uma marca");
 	}
 
@@ -18,8 +18,8 @@ public class Controllermarca {
 		return dao.listaDeMarcas();
 	}
 
-	public void actualizarMarca(String usuario,String perfil,int codigoMarca, String marca) throws SQLException {
-		dao.actualizarMarca(codigoMarca, marca);
+	public void actualizarMarca(String usuario,String perfil,int codigoMarca,int codigoFabricante, String marca) throws SQLException {
+		dao.actualizarMarca(codigoMarca, marca,codigoFabricante);
 		log.registarLog(usuario, perfil,"Actualizou uma marca com o codigo "+codigoMarca);
 	}
 

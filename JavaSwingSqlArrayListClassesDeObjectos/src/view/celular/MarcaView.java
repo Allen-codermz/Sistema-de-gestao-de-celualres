@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,28 +20,38 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
+import controller.celular.ControllerFabricante;
 import controller.celular.Controllermarca;
 import model.celular.CadastroUser;
+import model.celular.Fabricante;
 import model.celular.Marca;
+import javax.swing.JComboBox;
 
 public class MarcaView implements ActionListener, MouseListener {
 
 	private JFrame frameMarca;
 	private JTextField textMarca;
 	private JTable table;
-	
-	private JLabel lblUser;
 
+	private JLabel lblUser;
+	private TableRowSorter<DefaultTableModel> sorter;
+	private JTextField textPesquisa;
+	private JComboBox comboBoxFabricante;
+	private ArrayList<Fabricante> listaDeFabricantes = new ArrayList<>();
 	private JButton btnAdicionar, btnListar, btnEditar, btnRemover;
 
 	private CadastroUser usuarioLogado;
+	private JLabel lblNewLabel;
 
 	/**
 	 * Launch the application.
 	 */
-	
 
 	/**
 	 * Create the application.
@@ -47,11 +59,12 @@ public class MarcaView implements ActionListener, MouseListener {
 	public MarcaView(CadastroUser usuario) {
 		this.usuarioLogado = usuario;
 		initialize();
+		carregarFabricante();
 		confirmarPermissoes();
-		if(usuario != null) {
-			lblUser.setText("Usuario: "+ usuarioLogado.getNome()+" | "+"Perfil: "+usuarioLogado.getPerfil());
+		if (usuario != null) {
+			lblUser.setText("Usuario: " + usuarioLogado.getNome() + " | " + "Perfil: " + usuarioLogado.getPerfil());
 		}
-	
+
 	}
 
 	public void setVisible(boolean visible) {
@@ -70,23 +83,36 @@ public class MarcaView implements ActionListener, MouseListener {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(240, 237, 229));
-		panel.setBounds(70, 234, 344, 90);
+		panel.setBounds(70, 181, 387, 143);
 		frameMarca.getContentPane().add(panel);
 		panel.setLayout(null);
 
 		JLabel lblMarca = new JLabel("Marca:");
 		lblMarca.setForeground(new Color(0, 70, 67));
 		lblMarca.setFont(new Font("Caladea", Font.BOLD, 16));
-		lblMarca.setBounds(43, 37, 79, 29);
+		lblMarca.setBounds(24, 96, 79, 29);
 		panel.add(lblMarca);
 
 		textMarca = new JTextField();
 		textMarca.setForeground(new Color(0, 70, 67));
 		textMarca.setFont(new Font("Caladea", Font.BOLD, 14));
 		textMarca.setBackground(new Color(240, 237, 229));
-		textMarca.setBounds(132, 37, 165, 29);
+		textMarca.setBounds(121, 88, 254, 38);
 		panel.add(textMarca);
 		textMarca.setColumns(10);
+
+		comboBoxFabricante = new JComboBox();
+		comboBoxFabricante.setForeground(new Color(0, 70, 67));
+		comboBoxFabricante.setFont(new Font("Caladea", Font.BOLD, 14));
+		comboBoxFabricante.setBackground(new Color(240, 237, 229));
+		comboBoxFabricante.setBounds(120, 20, 255, 38);
+		panel.add(comboBoxFabricante);
+
+		JLabel lblFabricante = new JLabel("Fabricante:");
+		lblFabricante.setForeground(new Color(0, 70, 67));
+		lblFabricante.setFont(new Font("Caladea", Font.BOLD, 16));
+		lblFabricante.setBounds(24, 41, 95, 17);
+		panel.add(lblFabricante);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(240, 237, 229));
@@ -139,8 +165,10 @@ public class MarcaView implements ActionListener, MouseListener {
 		table = new JTable();
 		table.setFont(new Font("Caladea", Font.BOLD, 14));
 		table.setForeground(new Color(0, 70, 67));
+		table.addMouseListener(this);
 		scrollPane.setViewportView(table);
-		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "CodigoMarca", "Nome da Marca" }));
+		table.setModel(new DefaultTableModel(new Object[][] {},
+				new String[] { "CodigoMarca", "Nome da Marca", "Fabricante" }));
 		table.setBackground(new Color(240, 237, 229));
 
 		JScrollBar scrollBar = new JScrollBar();
@@ -171,14 +199,55 @@ public class MarcaView implements ActionListener, MouseListener {
 		btnNewButton.setBackground(new Color(0, 70, 67));
 		btnNewButton.setBounds(1223, 28, 136, 38);
 		frameMarca.getContentPane().add(btnNewButton);
-		
+
 		lblUser = new JLabel("");
 		lblUser.setForeground(new Color(0, 70, 67));
 		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
 		lblUser.setBounds(624, 14, 368, 17);
 		frameMarca.getContentPane().add(lblUser);
+
+		textPesquisa = new JTextField();
+		textPesquisa.setFont(new Font("Caladea", Font.PLAIN, 14));
+		textPesquisa.setBackground(new Color(240, 237, 229));
+		textPesquisa.setForeground(new Color(0, 70, 67));
+		textPesquisa.setBounds(834, 434, 194, 38);
+		frameMarca.getContentPane().add(textPesquisa);
+		textPesquisa.setColumns(10);
+
+		lblNewLabel = new JLabel("Pesquisar:");
+		lblNewLabel.setForeground(new Color(0, 70, 67));
+		lblNewLabel.setFont(new Font("Caladea", Font.BOLD, 18));
+		lblNewLabel.setBounds(834, 416, 97, 17);
+		frameMarca.getContentPane().add(lblNewLabel);
+		textPesquisa.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+		});
 	}
-	//nivel de acesso
+
+	public void filtar() {
+		String texto = textPesquisa.getText();
+		if (texto.isEmpty()) {
+			sorter.setRowFilter(null);
+		} else {
+			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), 1, 2, 3));
+		}
+	}
+
+	// nivel de acesso
 	public void confirmarPermissoes() {
 		if (usuarioLogado == null)
 			return;
@@ -190,21 +259,41 @@ public class MarcaView implements ActionListener, MouseListener {
 		}
 	}
 
+	private void carregarFabricante() {
+
+		comboBoxFabricante.removeAllItems();
+		listaDeFabricantes.clear();
+		try {
+			ControllerFabricante controller = new ControllerFabricante();
+			listaDeFabricantes = controller.listaDeFabricantes();
+			for (Fabricante fabricante : listaDeFabricantes) {
+				comboBoxFabricante.addItem(fabricante.getPaisDeOrigem() + " - " + fabricante.getFabricante());
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void adicionarMarca() {
 		String marca = textMarca.getText();
+		int codigoFabricante = listaDeFabricantes.get(comboBoxFabricante.getSelectedIndex()).getCodigoFabricante();
 
-		if (marca.isEmpty()|| marca.isBlank()) {
+		if (marca.isEmpty() || marca.isBlank()) {
 			JOptionPane.showMessageDialog(null, "Por favor preencha o campo");
+			return;
+		}
+		if (comboBoxFabricante.getSelectedIndex() == -1) {
+			JOptionPane.showMessageDialog(null, "Por favor cadastre um fabricante primeiro!!");
 			return;
 		}
 
 		Controllermarca controller = new Controllermarca();
 		try {
-			controller.adicionarMarca(usuarioLogado.getNome(), usuarioLogado.getPerfil(), marca);
+			controller.adicionarMarca(usuarioLogado.getNome(), usuarioLogado.getPerfil(), marca, codigoFabricante);
 			JOptionPane.showMessageDialog(null, "Marca adicionado com sucesso!");
 			limparCaixas();
 			limparTabela();
-			// listar();
+			listar();
 		} catch (SQLException ex) {
 			JOptionPane.showMessageDialog(null, "Erro ao adicionar: " + ex.getMessage());
 		}
@@ -218,12 +307,18 @@ public class MarcaView implements ActionListener, MouseListener {
 			for (Marca marca : listaDeMarcas) {
 				int codigo = marca.getCodigoMarca();
 				String nomeMarca = marca.getMarca();
+				Fabricante fabricante = marca.getFabricante();
 
-				listarNaTabela.addRow(new Object[] { codigo, nomeMarca });
+				listarNaTabela.addRow(new Object[] { codigo, nomeMarca, fabricante });
 			}
 		} catch (ClassNotFoundException | SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		}
+		sorter = new TableRowSorter<DefaultTableModel>(listarNaTabela);
+		table.setRowSorter(sorter);
+
+		for (int i = 0; i < table.getColumnCount(); i++) {
+			sorter.setSortable(i, false);
 		}
 	}
 
@@ -234,14 +329,17 @@ public class MarcaView implements ActionListener, MouseListener {
 			return;
 		}
 		String marca = textMarca.getText();
-		if(marca.isEmpty() || marca.isBlank()) {
+		if (marca.isEmpty() || marca.isBlank()) {
 			JOptionPane.showMessageDialog(null, "Por favor preencha o campo!!");
 			return;
 		}
+		int codigoFabricante = listaDeFabricantes.get(comboBoxFabricante.getSelectedIndex()).getCodigoFabricante();
 		try {
 			int codigoMarca = (int) table.getValueAt(linhaSeleccionada, 0);
+
 			Controllermarca controller = new Controllermarca();
-			controller.actualizarMarca(usuarioLogado.getNome(), usuarioLogado.getPerfil(), codigoMarca, marca);
+			controller.actualizarMarca(usuarioLogado.getNome(), usuarioLogado.getPerfil(), codigoMarca,
+					codigoFabricante, marca);
 			JOptionPane.showMessageDialog(null, "Marca editada com sucesso!");
 			limparCaixas();
 			limparTabela();
@@ -305,6 +403,15 @@ public class MarcaView implements ActionListener, MouseListener {
 			DefaultTableModel linhaSelecionada = (DefaultTableModel) table.getModel();
 
 			textMarca.setText(linhaSelecionada.getValueAt(indice, 1).toString());
+
+			Fabricante fabricanteDaLinha = (Fabricante) linhaSelecionada.getValueAt(indice, 2);
+			for (int i = 0; i < listaDeFabricantes.size(); i++) {
+				if (listaDeFabricantes.get(i).getCodigoFabricante() == fabricanteDaLinha.getCodigoFabricante()) {
+					comboBoxFabricante.setSelectedIndex(i);
+					break;
+				}
+
+			}
 		}
 	}
 
@@ -331,5 +438,4 @@ public class MarcaView implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 
 	}
-
 }

@@ -39,7 +39,7 @@ public class LogsView {
 	private CadastroUser usuarioLogado;
 	private JLabel lblUser;
 	private JTextField textPesquisa;
-	
+
 	private TableRowSorter<DefaultTableModel> sorter;
 
 	/**
@@ -125,6 +125,11 @@ public class LogsView {
 		lblUser.setBounds(562, 19, 298, 17);
 		frame.getContentPane().add(lblUser);
 
+		JLabel lblNewLabel = new JLabel("Pesquisar:");
+		lblNewLabel.setFont(new Font("Caladea", Font.BOLD, 18));
+		lblNewLabel.setForeground(new Color(0, 70, 67));
+		lblNewLabel.setBounds(1094, 223, 97, 17);
+		frame.getContentPane().add(lblNewLabel);
 		textPesquisa = new JTextField();
 		textPesquisa.setFont(new Font("Caladea", Font.PLAIN, 14));
 		textPesquisa.setBackground(new Color(240, 237, 229));
@@ -132,13 +137,6 @@ public class LogsView {
 		textPesquisa.setBounds(1089, 242, 194, 38);
 		frame.getContentPane().add(textPesquisa);
 		textPesquisa.setColumns(10);
-		
-		JLabel lblNewLabel = new JLabel("Pesquisar:");
-		lblNewLabel.setFont(new Font("Caladea", Font.BOLD, 18));
-		lblNewLabel.setForeground(new Color(0, 70, 67));
-		lblNewLabel.setBounds(1094, 223, 97, 17);
-		frame.getContentPane().add(lblNewLabel);
-
 		textPesquisa.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
@@ -157,13 +155,13 @@ public class LogsView {
 
 		});
 	}
-	
+
 	public void filtar() {
 		String texto = textPesquisa.getText();
-		if(texto.isEmpty()) {
+		if (texto.isEmpty()) {
 			sorter.setRowFilter(null);
-		}else {
-			sorter.setRowFilter(RowFilter.regexFilter("(?i)"+ Pattern.quote(texto),1,2,3,4));
+		} else {
+			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), 1, 2, 3, 4));
 		}
 	}
 
@@ -193,5 +191,9 @@ public class LogsView {
 		}
 		sorter = new TableRowSorter<DefaultTableModel>(listarNaTabela);
 		table.setRowSorter(sorter);
+		
+		for(int i= 0;i<table.getColumnCount();i++) {
+			sorter.setSortable(i, false);
+		}
 	}
 }

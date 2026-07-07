@@ -49,7 +49,6 @@ public class DaoCelular {
 			int codigo = rs.getInt("numeroDeSerie");
 			double preco = rs.getDouble("preco");
 			int anoDeFabrico = rs.getInt("anoDeFabrico");
-
 			Marca marca = new Marca(rs.getInt("codigoMarca"), rs.getString("marca"));
 			Modelo modelo = new Modelo(rs.getInt("codigoModelo"), rs.getString("modelo"));
 			Cor cor = new Cor(rs.getInt("codigoCor"), rs.getString("cor"), rs.getString("descricao"));

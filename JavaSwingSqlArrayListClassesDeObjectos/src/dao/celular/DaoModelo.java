@@ -49,12 +49,13 @@ public class DaoModelo {
 	}
 
 //	update
-	public void actualizarModelo(int codigoModelo, String modelo) throws SQLException {
+	public void actualizarModelo(int codigoModelo, String modelo,int codigoMarca) throws SQLException {
 		Connection con = Conexao.conectar();
 		PreparedStatement stmt = null;
-		stmt = con.prepareStatement("update modelo set modelo=? where codigoModelo=?");
+		stmt = con.prepareStatement("update modelo set modelo=?, codigoMarca=? where codigoModelo=?");
 		stmt.setString(1, modelo);
-		stmt.setInt(2, codigoModelo);
+		stmt.setInt(2,codigoMarca);
+		stmt.setInt(3, codigoModelo);
 		stmt.executeUpdate();
 		con.close();
 

@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -19,7 +22,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import controller.celular.ControllerCadastroUser;
 import model.celular.CadastroUser;
@@ -27,7 +34,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JPasswordField;
 
-public class CadastroUserView implements ActionListener {
+public class CadastroUserView implements ActionListener, MouseListener {
 
 	private JFrame frame;
 	private JTextField textNome;
@@ -36,6 +43,9 @@ public class CadastroUserView implements ActionListener {
 
 	private JButton btnCadastrar, btnGerarSenha, btnListar, btnEditar, btnRemover, btnResetSenha;
 	private JTable table;
+	
+	private TableRowSorter<DefaultTableModel> sorter;
+	private JTextField textPesquisa;
 
 	private JComboBox comboBoxPerfil;
 
@@ -259,11 +269,53 @@ public class CadastroUserView implements ActionListener {
 		table.setBackground(new Color(240, 237, 229));
 		table.setForeground(new Color(0, 70, 67));
 		table.setFont(new Font("Caladea", Font.BOLD, 14));
+		table.addMouseListener(this);
 		table.setModel(new DefaultTableModel(new Object[][] {},
 				new String[] { "CodigoUser", "Nome", "Apelido", "username", "Perfil" }));
 		scrollPane.setViewportView(table);
+		
+		textPesquisa = new JTextField();
+		textPesquisa.setFont(new Font("Caladea", Font.PLAIN, 14));
+		textPesquisa.setBackground(new Color(240, 237, 229));
+		textPesquisa.setForeground(new Color(0, 70, 67));
+		textPesquisa.setBounds(1083, 441, 194, 38);
+		frame.getContentPane().add(textPesquisa);
+		textPesquisa.setColumns(10);
+		
+		JLabel lblNewLabel_6 = new JLabel("Pesquisar:");
+		lblNewLabel_6.setForeground(new Color(0, 70, 67));
+		lblNewLabel_6.setFont(new Font("Caladea", Font.BOLD, 18));
+		lblNewLabel_6.setBounds(1083, 423, 97, 17);
+		frame.getContentPane().add(lblNewLabel_6);
+		textPesquisa.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				filtar();
+			}
 
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+		});
 	}
+
+	public void filtar() {
+		String texto = textPesquisa.getText();
+		if (texto.isEmpty()) {
+			sorter.setRowFilter(null);
+		} else {
+			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), 1, 2, 3, 4,5,6,7,8));
+		}
+	}
+
+	
 
 	// confirmacao do cadastro do usuario
 	private void cadastrar() {
@@ -373,6 +425,12 @@ public class CadastroUserView implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Erro ao listar" + e1.getMessage());
 			e1.printStackTrace();
 		}
+		sorter = new TableRowSorter<DefaultTableModel>(listarNaTabela);
+		table.setRowSorter(sorter);
+		
+		for(int i= 0;i<table.getColumnCount();i++) {
+			sorter.setSortable(i, false);
+		}
 	}
 
 	// update (alterar perfil do user)
@@ -444,7 +502,26 @@ public class CadastroUserView implements ActionListener {
 	}
 
 	public void limparCaixas() {
-		// textModelo.setText("");
+		 textUsername.setText("");
+	}
+	
+	public void mouseClicked(MouseEvent e) {
+		if (table.getSelectedRow() != -1) {
+			
+			textNome.setEditable(false);
+			textApelido.setEditable(false);
+			textUsername.setEditable(false);
+			btnCadastrar.setEnabled(false);
+			btnSugestao.setEnabled(false);
+			btnGerarSenha.setEnabled(false);
+			
+			int indice = table.getSelectedRow();
+			DefaultTableModel linhaSelecionada = (DefaultTableModel) table.getModel();
+
+			textNome.setText(linhaSelecionada.getValueAt(indice, 1).toString());
+			textApelido.setText(linhaSelecionada.getValueAt(indice, 2).toString());
+			textUsername.setText(linhaSelecionada.getValueAt(indice, 3).toString());
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -475,5 +552,29 @@ public class CadastroUserView implements ActionListener {
 	public void setVisible(boolean visible) {
 		frame.setVisible(visible);
 
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

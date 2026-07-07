@@ -3,6 +3,7 @@ package model.celular;
 public class Marca {
 	private int codigoMarca;
 	private String marca;
+	private Fabricante fabricante;
 
 	public Marca(int codigoMarca, String marca) {
 		this.codigoMarca = codigoMarca;
@@ -27,6 +28,16 @@ public class Marca {
 
 	public void setMarca(String marca) {
 		this.marca = marca;
+	}
+	
+	
+
+	public Fabricante getFabricante() {
+		return fabricante;
+	}
+
+	public void setFabricante(Fabricante fabricante) {
+		this.fabricante = fabricante;
 	}
 
 	@Override

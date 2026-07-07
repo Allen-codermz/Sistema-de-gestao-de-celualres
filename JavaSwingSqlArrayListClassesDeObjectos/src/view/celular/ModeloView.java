@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,7 +20,11 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import controller.celular.ControllerModelo;
 import controller.celular.Controllermarca;
@@ -36,10 +42,13 @@ public class ModeloView implements ActionListener, MouseListener {
 	private JTable table;
 	private CadastroUser usuarioLogado;
 	
+	private TableRowSorter<DefaultTableModel> sorter;
+	private JTextField textPesquisa;
 	private ArrayList<Marca> listaDeMarcas = new ArrayList<>();
 
 	private JLabel lblUser;
 	private JComboBox comboBoxMarca;
+	private JLabel lblNewLabel_2;
 	/**
 	 * Launch the application.
 	 */
@@ -158,6 +167,7 @@ public class ModeloView implements ActionListener, MouseListener {
 		table.setBackground(new Color(240, 237, 229));
 		table.setFont(new Font("Caladea", Font.BOLD, 14));
 		table.setForeground(new Color(0, 70, 67));
+		table.addMouseListener(this);
 		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "CodigoModelo", "Modelo", "Marca" }));
 		scrollPane.setViewportView(table);
 
@@ -191,8 +201,48 @@ public class ModeloView implements ActionListener, MouseListener {
 		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
 		lblUser.setBounds(560, 6, 368, 17);
 		frame.getContentPane().add(lblUser);
+		
+		textPesquisa = new JTextField();
+		textPesquisa.setFont(new Font("Caladea", Font.PLAIN, 14));
+		textPesquisa.setBackground(new Color(240, 237, 229));
+		textPesquisa.setForeground(new Color(0, 70, 67));
+		textPesquisa.setBounds(787, 433, 194, 38);
+		frame.getContentPane().add(textPesquisa);
+		textPesquisa.setColumns(10);
+		
+		lblNewLabel_2 = new JLabel("Pesquisar:");
+		lblNewLabel_2.setForeground(new Color(0, 70, 67));
+		lblNewLabel_2.setFont(new Font("Caladea", Font.BOLD, 18));
+		lblNewLabel_2.setBounds(787, 416, 97, 17);
+		frame.getContentPane().add(lblNewLabel_2);
+		textPesquisa.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+		});
 	}
-	
+
+	public void filtar() {
+		String texto = textPesquisa.getText();
+		if (texto.isEmpty()) {
+			sorter.setRowFilter(null);
+		} else {
+			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), 1, 2, 3, 4,5,6,7,8));
+		}
+	}
+		
 	private void carregarMarca() {
 
 		comboBoxMarca.removeAllItems();
@@ -228,7 +278,7 @@ public class ModeloView implements ActionListener, MouseListener {
 			JOptionPane.showMessageDialog(null, "Modelo adicionado com sucesso!");
 			limparCaixas();
 			limparTabela();
-			// listar();
+			listar();
 		} catch (SQLException ex) {
 			JOptionPane.showMessageDialog(null, "Erro ao adicionar: " + ex.getMessage());
 		}
@@ -249,6 +299,12 @@ public class ModeloView implements ActionListener, MouseListener {
 		} catch (ClassNotFoundException | SQLException e1) {
 			JOptionPane.showMessageDialog(null, "Erro ao listar" + e1.getMessage());
 			e1.printStackTrace();
+		}
+		sorter = new TableRowSorter<DefaultTableModel>(listarNaTabela);
+		table.setRowSorter(sorter);
+		
+		for(int i= 0;i<table.getColumnCount();i++) {
+			sorter.setSortable(i, false);
 		}
 	}
 
@@ -274,10 +330,11 @@ public class ModeloView implements ActionListener, MouseListener {
 			JOptionPane.showMessageDialog(null, "Por favor preencha o campo!");
 			return;
 		}
+		int codigoMarca = listaDeMarcas.get(comboBoxMarca.getSelectedIndex()).getCodigoMarca();
 		try {
 			int codigoModelo = (int) table.getValueAt(linhaSeleccionada, 0);
 			ControllerModelo controller = new ControllerModelo();
-			controller.actualizarModelo(usuarioLogado.getNome(), usuarioLogado.getPerfil(), codigoModelo, modelo);
+			controller.actualizarModelo(usuarioLogado.getNome(), usuarioLogado.getPerfil(), codigoModelo,codigoMarca, modelo);
 			JOptionPane.showMessageDialog(null, "Marca editada com sucesso!");
 			limparCaixas();
 			limparTabela();
@@ -341,6 +398,12 @@ public class ModeloView implements ActionListener, MouseListener {
 			DefaultTableModel linhaSelecionada = (DefaultTableModel) table.getModel();
 
 			textModelo.setText(linhaSelecionada.getValueAt(indice, 1).toString());
+			
+			Marca marcaDaLinha = (Marca) linhaSelecionada.getValueAt(indice, 2);
+			for (int i = 0; i < listaDeMarcas.size(); i++) {
+				if (listaDeMarcas.get(i).getCodigoMarca() == marcaDaLinha.getCodigoMarca()) {
+					comboBoxMarca.setSelectedIndex(i);
+					break;}}
 		}
 	}
 

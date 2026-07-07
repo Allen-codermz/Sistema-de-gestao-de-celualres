@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -19,8 +20,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import controller.celular.ControllerCor;
 import controller.celular.CorApiService;
@@ -33,12 +38,16 @@ public class Corview implements ActionListener, MouseListener {
 	private JTextField textCorHex;
 	private JTable table;
 
+	private TableRowSorter<DefaultTableModel> sorter;
+	private JTextField textPesquisa;
+
 	private JButton btnListar, btnEditar, btnRemover, btnAdicionar;
 	private JButton btnSelecionar;
 	private JButton btnNewButton_1;
-	private JPanel panel_1;
+	private JPanel panelPreVizu;
 	private CadastroUser usuarioLogado;
 	private JLabel lblUser;
+	private JLabel lblNewLabel_1;
 
 	/**
 	 * Launch the application.
@@ -51,10 +60,10 @@ public class Corview implements ActionListener, MouseListener {
 		this.usuarioLogado = usuario;
 		initialize();
 		confirmarPermissoes();
-		if(usuario != null) {
-			lblUser.setText("Usuario: "+ usuarioLogado.getNome()+" | "+"Perfil: "+usuarioLogado.getPerfil());
+		if (usuario != null) {
+			lblUser.setText("Usuario: " + usuarioLogado.getNome() + " | " + "Perfil: " + usuarioLogado.getPerfil());
 		}
-	
+
 	}
 
 	/**
@@ -80,7 +89,7 @@ public class Corview implements ActionListener, MouseListener {
 		lblNewLabel.setFont(new Font("Caladea", Font.BOLD, 30));
 
 		JPanel panel = new JPanel();
-		panel.setBounds(660, 114, 227, 341);
+		panel.setBounds(660, 114, 227, 316);
 		panel.setBackground(new Color(240, 237, 229));
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -118,13 +127,13 @@ public class Corview implements ActionListener, MouseListener {
 		btnAdicionar.addActionListener(this);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(367, 498, 682, 233);
+		panel_2.setBounds(364, 507, 682, 171);
 		panel_2.setBackground(new Color(240, 237, 229));
 		panel_2.setLayout(null);
 		frame.getContentPane().add(panel_2);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(33, 29, 626, 154);
+		scrollPane.setBounds(44, 12, 626, 154);
 		panel_2.add(scrollPane);
 
 		table = new JTable();
@@ -147,32 +156,72 @@ public class Corview implements ActionListener, MouseListener {
 		btnNewButton_1.setBackground(new Color(0, 70, 67));
 		btnNewButton_1.setBounds(1198, 27, 127, 38);
 		frame.getContentPane().add(btnNewButton_1);
-		
+
 		lblUser = new JLabel("");
 		lblUser.setForeground(new Color(0, 70, 67));
 		lblUser.setFont(new Font("Caladea", Font.BOLD, 14));
 		lblUser.setBounds(625, 12, 368, 17);
 		frame.getContentPane().add(lblUser);
-		
-				btnSelecionar = new JButton("Selicionar Cor");
-				btnSelecionar.setBounds(83, 232, 130, 48);
-				frame.getContentPane().add(btnSelecionar);
-				btnSelecionar.setFont(new Font("Caladea", Font.BOLD, 14));
-				btnSelecionar.setForeground(new Color(240, 237, 229));
-				btnSelecionar.setBackground(new Color(0, 70, 67));
-				
-						textCorHex = new JTextField();
-						textCorHex.setBounds(225, 232, 127, 48);
-						frame.getContentPane().add(textCorHex);
-						textCorHex.setForeground(new Color(0, 70, 67));
-						textCorHex.setFont(new Font("Caladea", Font.BOLD, 14));
-						textCorHex.setEditable(false);
-						textCorHex.setColumns(10);
-						
-								panel_1 = new JPanel();
-								panel_1.setBounds(353, 232, 59, 48);
-								frame.getContentPane().add(panel_1);
-				btnSelecionar.addActionListener(this);
+
+		btnSelecionar = new JButton("Selicionar Cor");
+		btnSelecionar.setBounds(83, 232, 130, 48);
+		frame.getContentPane().add(btnSelecionar);
+		btnSelecionar.setFont(new Font("Caladea", Font.BOLD, 14));
+		btnSelecionar.setForeground(new Color(240, 237, 229));
+		btnSelecionar.setBackground(new Color(0, 70, 67));
+
+		textCorHex = new JTextField();
+		textCorHex.setBounds(225, 232, 127, 48);
+		frame.getContentPane().add(textCorHex);
+		textCorHex.setForeground(new Color(0, 70, 67));
+		textCorHex.setFont(new Font("Caladea", Font.BOLD, 14));
+		textCorHex.setEditable(false);
+		textCorHex.setColumns(10);
+
+		panelPreVizu = new JPanel();
+		panelPreVizu.setBounds(353, 232, 59, 48);
+		frame.getContentPane().add(panelPreVizu);
+		btnSelecionar.addActionListener(this);
+
+		textPesquisa = new JTextField();
+		textPesquisa.setFont(new Font("Caladea", Font.PLAIN, 14));
+		textPesquisa.setBackground(new Color(240, 237, 229));
+		textPesquisa.setForeground(new Color(0, 70, 67));
+		textPesquisa.setBounds(839, 471, 194, 38);
+		frame.getContentPane().add(textPesquisa);
+		textPesquisa.setColumns(10);
+
+		lblNewLabel_1 = new JLabel("Pesquisar:");
+		lblNewLabel_1.setForeground(new Color(0, 70, 67));
+		lblNewLabel_1.setFont(new Font("Caladea", Font.BOLD, 18));
+		lblNewLabel_1.setBounds(839, 454, 97, 17);
+		frame.getContentPane().add(lblNewLabel_1);
+		textPesquisa.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				filtar();
+			}
+
+		});
+	}
+
+	public void filtar() {
+		String texto = textPesquisa.getText();
+		if (texto.isEmpty()) {
+			sorter.setRowFilter(null);
+		} else {
+			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), 1, 2, 3, 4, 5, 6, 7, 8));
+		}
 	}
 
 	public void confirmarPermissoes() {
@@ -190,7 +239,7 @@ public class Corview implements ActionListener, MouseListener {
 		JColorChooser collorChoser = new JColorChooser();
 		Color color = JColorChooser.showDialog(null, "Selecione uma cor", Color.white);
 		if (color != null) {
-			panel_1.setBackground(color);
+			panelPreVizu.setBackground(color);
 			;
 
 			String colorHex = String.format("#%02X%02X%02X", color.getRed(), color.getGreen(), color.getBlue());
@@ -212,7 +261,7 @@ public class Corview implements ActionListener, MouseListener {
 			JOptionPane.showMessageDialog(null, "Cor adicionado com sucesso!");
 			limparCaixas();
 			limparTabela();
-			// listar();
+			listar();
 		} catch (SQLException ex) {
 			JOptionPane.showMessageDialog(null, "Erro ao adicionar: " + ex.getMessage());
 		}
@@ -235,6 +284,12 @@ public class Corview implements ActionListener, MouseListener {
 			JOptionPane.showMessageDialog(null, "Erro ao listar: " + e1.getMessage());
 			e1.printStackTrace();
 		}
+		sorter = new TableRowSorter<DefaultTableModel>(listarNaTabela);
+		table.setRowSorter(sorter);
+
+		for (int i = 0; i < table.getColumnCount(); i++) {
+			sorter.setSortable(i, false);
+		}
 	}
 
 	private void editarCor() {
@@ -245,7 +300,7 @@ public class Corview implements ActionListener, MouseListener {
 		}
 		String cor = textCorHex.getText();
 		if (cor.isEmpty()) {
-			JOptionPane.showMessageDialog(null,"Por favor selecione uma nova cor primeiro!!");
+			JOptionPane.showMessageDialog(null, "Por favor selecione uma nova cor primeiro!!");
 			return;
 		}
 		try {
@@ -318,6 +373,10 @@ public class Corview implements ActionListener, MouseListener {
 			DefaultTableModel linhaSelecionada = (DefaultTableModel) table.getModel();
 
 			textCorHex.setText(linhaSelecionada.getValueAt(indice, 1).toString());
+			String hex = textCorHex.getText();
+			panelPreVizu.setOpaque(true);
+			panelPreVizu.setBackground(Color.decode(hex));
+		
 		}
 	}
 

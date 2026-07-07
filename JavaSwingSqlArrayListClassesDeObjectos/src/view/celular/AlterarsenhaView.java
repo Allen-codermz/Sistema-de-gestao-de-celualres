@@ -200,11 +200,12 @@ public class AlterarsenhaView implements ActionListener {
 			ControllerCadastroUser user = new ControllerCadastroUser();
 			user.alterarSenha(username, usuario.getPerfil(), senhaNova);
 			JOptionPane.showMessageDialog(null, "Senha alterada com sucesso");
-			frame.dispose();
+			
 		}catch (SQLException ex) {
 			JOptionPane.showMessageDialog(null, "Erro ao alterar Senha: "+ex.getMessage());
 		}
-		
+		LoginView login = new LoginView(usuario);
+		login.setVisible(true);
 	}
 
 	public void setVisibe(boolean visible) {

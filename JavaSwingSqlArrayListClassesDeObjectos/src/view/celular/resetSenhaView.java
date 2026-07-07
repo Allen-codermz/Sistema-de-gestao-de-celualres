@@ -22,6 +22,7 @@ import java.awt.Font;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -189,7 +190,11 @@ public class resetSenhaView implements ActionListener {
 		String username = (String) comboBoxUsers.getSelectedItem();
 
 		try {
-			FileWriter writer = new FileWriter(username + ".txt");
+			File file = new File("Credenciais Resetadas");
+			if(!file.exists()) {
+				file.mkdirs();
+			}
+			FileWriter writer = new FileWriter(new File(file,username + ".txt"));
 
 			writer.write("Nome:" + username + "\n");
 			writer.write("Perfil:" + perfil + "\n");

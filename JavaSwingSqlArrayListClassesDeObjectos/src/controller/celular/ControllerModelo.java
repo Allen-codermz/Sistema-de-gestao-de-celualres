@@ -18,8 +18,8 @@ public class ControllerModelo {
 		return dao.listaDeModelos();
 	}
 
-	public void actualizarModelo(String usuario,String perfil,int codigoModelo, String modelo) throws SQLException {
-		dao.actualizarModelo(codigoModelo, modelo);
+	public void actualizarModelo(String usuario,String perfil,int codigoModelo,int codigoMarca, String modelo) throws SQLException {
+		dao.actualizarModelo(codigoModelo, modelo, codigoMarca);
 		log.registarLog(usuario, perfil, "Actualizou um modelo com o codigo "+codigoModelo);
 	}
 
