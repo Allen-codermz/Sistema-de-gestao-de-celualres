@@ -26,6 +26,6 @@ public class ControllerCelular {
 
 	public void removerCelular(String usuario,String perfil,int codigo) throws SQLException {
 		dao.removerCelular(codigo);
-		log.registarLog(usuario, perfil, "Removeu um  celular com o codigo"+codigo);
+		log.registarLog(usuario, perfil, "Removeu um celular com o codigo"+codigo);
 	}
 }

@@ -188,8 +188,12 @@ public class resetSenhaView implements ActionListener {
 	private void criarCredenciais() {
 		String perfil = (String) comboBoxPerfil.getSelectedItem();
 		String username = (String) comboBoxUsers.getSelectedItem();
-
+		
 		try {
+			DaoCadastroUser user = new DaoCadastroUser();
+			String senhaInicial = user.encontrarSenhaInicial(username);
+	
+
 			File file = new File("Credenciais Resetadas");
 			if(!file.exists()) {
 				file.mkdirs();
@@ -198,11 +202,13 @@ public class resetSenhaView implements ActionListener {
 
 			writer.write("Nome:" + username + "\n");
 			writer.write("Perfil:" + perfil + "\n");
+			writer.write("Senha:" + senhaInicial + "\n");
+			
 
 			writer.close();
 
-		} catch (IOException ex) {
-			JOptionPane.showMessageDialog(null, "Erro ao gerar senha");
+		} catch (IOException  | SQLException ex) {
+			JOptionPane.showMessageDialog(null, "Erro ao criar credenciais");
 		}
 	}
 

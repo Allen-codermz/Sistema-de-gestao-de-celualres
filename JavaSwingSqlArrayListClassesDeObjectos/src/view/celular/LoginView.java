@@ -37,7 +37,7 @@ public class LoginView implements ActionListener {
 					LoginView window = new LoginView(null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
-					e.printStackTrace();
+					e.printStackTrace();  
 				}
 			}
 		});
@@ -179,21 +179,17 @@ public class LoginView implements ActionListener {
 
 			boolean senhaPadrao = usuario.getSenhaInicial() != null && usuario.getSenha() != null
 					&& usuario.getSenha().equals(usuario.getSenhaInicial());
-		if(senhaPadrao) {
-			JOptionPane.showMessageDialog(null, "Ainda esta com a sua senha padrão, será redirecionado para um formulario para a sua alteração!");
-			
-			AlterarsenhaView reset = new AlterarsenhaView();
-			reset.setVisible(true);
-			frame.dispose();
-			return;
-		}
-		
+			if (senhaPadrao) {
+				JOptionPane.showMessageDialog(null,
+						"Ainda esta com a sua senha padrão, será redirecionado para um formulario para a sua alteração!");
+
+				AlterarsenhaView reset = new AlterarsenhaView();
+				reset.setVisible(true);
+				frame.dispose();
+				return;
+			}
 			TelaPrincipalView tela = new TelaPrincipalView(usuario);
 			tela.setVisible(true);
-		
-
-			
-
 		} else {
 			JOptionPane.showMessageDialog(null, "Credenciais invalida!!");
 		}
@@ -207,6 +203,6 @@ public class LoginView implements ActionListener {
 
 	public void setVisible(boolean visible) {
 		frame.setVisible(true);
-
 	}
+
 }

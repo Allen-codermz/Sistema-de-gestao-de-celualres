@@ -328,9 +328,9 @@ public class Corview implements ActionListener, MouseListener {
 			ControllerCor controller = new ControllerCor();
 			controller.removerCor(usuarioLogado.getNome(), usuarioLogado.getPerfil(), codigoCor);
 			JOptionPane.showMessageDialog(null, "Cor removida com sucesso!");
-			// limparCaixas();
+			limparCaixas();
 			limparTabela();
-			// listar();
+			listar();
 
 		} catch (SQLException ex) {
 			JOptionPane.showMessageDialog(null, "Erro ao remover: " + ex.getMessage());

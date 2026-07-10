@@ -1,36 +1,24 @@
 package view.celular;
 
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import model.celular.CadastroUser;
 
-import java.awt.Color;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 public class TelaPrincipalView {
 
 	private JFrame frame;
-
 	private JLabel lblUser;
-
 	private CadastroUser usuarioLogado;
-
 	private JButton btnGerirUsers, btnAcessarLogs, btnGestaoDeFabricante;
 
-	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the application.
-	 */
 	public TelaPrincipalView(CadastroUser usuario) {
 		this.usuarioLogado = usuario;
 		initialize();

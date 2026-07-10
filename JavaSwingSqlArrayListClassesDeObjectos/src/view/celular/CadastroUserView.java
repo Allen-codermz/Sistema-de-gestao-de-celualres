@@ -401,7 +401,7 @@ public class CadastroUserView implements ActionListener, MouseListener {
 			writer.close();
 
 		} catch (IOException ex) {
-			JOptionPane.showMessageDialog(null, "Erro ao gerar senha");
+			JOptionPane.showMessageDialog(null, "Erro ao criar credenciais");
 		}
 	}
 
@@ -528,6 +528,7 @@ public class CadastroUserView implements ActionListener, MouseListener {
 		if (e.getSource() == btnCadastrar) {
 			cadastrar();
 			criarCredenciais();
+			listar();
 		}
 		if (e.getSource() == btnGerarSenha) {
 			gerarSenha();
