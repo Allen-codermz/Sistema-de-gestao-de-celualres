@@ -54,6 +54,7 @@ public class CadastroUserView implements ActionListener, MouseListener {
 	private JTextField textUsername;
 	private JButton btnSugestao;
 	private JLabel lblNewLabel_5;
+	private JButton btnLimpar;
 
 	/**
 	 * Launch the application.
@@ -209,7 +210,7 @@ public class CadastroUserView implements ActionListener, MouseListener {
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setLayout(null);
 		panel_1_1.setBackground(new Color(240, 237, 229));
-		panel_1_1.setBounds(512, 158, 230, 252);
+		panel_1_1.setBounds(512, 158, 230, 303);
 		frame.getContentPane().add(panel_1_1);
 
 		btnListar = new JButton("Listar");
@@ -232,7 +233,7 @@ public class CadastroUserView implements ActionListener, MouseListener {
 		btnRemover.setForeground(new Color(240, 237, 229));
 		btnRemover.setFont(new Font("Caladea", Font.BOLD, 14));
 		btnRemover.setBackground(new Color(0, 70, 67));
-		btnRemover.setBounds(50, 141, 127, 40);
+		btnRemover.setBounds(50, 145, 127, 40);
 		btnRemover.addActionListener(this);
 		panel_1_1.add(btnRemover);
 
@@ -246,8 +247,16 @@ public class CadastroUserView implements ActionListener, MouseListener {
 		btnResetSenha.setForeground(new Color(240, 237, 229));
 		btnResetSenha.setFont(new Font("Caladea", Font.BOLD, 14));
 		btnResetSenha.setBackground(new Color(0, 70, 67));
-		btnResetSenha.setBounds(50, 193, 127, 40);
+		btnResetSenha.setBounds(50, 251, 127, 40);
 		panel_1_1.add(btnResetSenha);
+		
+		btnLimpar = new JButton("Limpar");
+		btnLimpar.setForeground(new Color(240, 237, 229));
+		btnLimpar.setFont(new Font("Caladea", Font.BOLD, 14));
+		btnLimpar.setBackground(new Color(0, 70, 67));
+		btnLimpar.setBounds(50, 201, 127, 40);
+		btnLimpar.addActionListener(this);
+		panel_1_1.add(btnLimpar);
 
 		lblUser = new JLabel("");
 		lblUser.setForeground(new Color(0, 70, 67));
@@ -493,6 +502,21 @@ public class CadastroUserView implements ActionListener, MouseListener {
 			JOptionPane.showMessageDialog(null, "Erro ao remover: " + ex.getMessage());
 		}
 	}
+	
+	public void limpar() {
+		textNome.setEditable(true);
+		textApelido.setEditable(true);
+		textUsername.setEditable(true);
+		btnCadastrar.setEnabled(true);
+		btnSugestao.setEnabled(true);
+		btnGerarSenha.setEnabled(true);
+		btnResetSenha.setEnabled(true);
+		
+		textNome.setText("");
+		textApelido.setText("");
+		textUsername.setText("");
+		
+	}
 
 	public void limparTabela() {
 		while (table.getRowCount() > 0) {
@@ -514,6 +538,8 @@ public class CadastroUserView implements ActionListener, MouseListener {
 			btnCadastrar.setEnabled(false);
 			btnSugestao.setEnabled(false);
 			btnGerarSenha.setEnabled(false);
+			btnResetSenha.setEnabled(false);
+			
 			
 			int indice = table.getSelectedRow();
 			DefaultTableModel linhaSelecionada = (DefaultTableModel) table.getModel();
@@ -546,6 +572,9 @@ public class CadastroUserView implements ActionListener, MouseListener {
 		}
 		if (e.getSource() == btnSugestao) {
 			gerarUsername();
+		}
+		if(e.getSource()== btnLimpar) {
+			limpar();
 		}
 
 	}

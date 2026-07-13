@@ -38,9 +38,11 @@ public class DaoCelular {
 		Connection con = Conexao.conectar();
 		stmt = con.prepareStatement("SELECT c.numeroDeSerie, c.preco, c.anoDeFabrico, " + "m.codigoMarca, m.marca, "
 				+ "mo.codigoModelo, mo.modelo, " + "co.codigoCor, co.Cor, co.descricao, "
-				+ "f.codigoFabricante, f.fabricante, f.paisDeOrigem " + "FROM celulares c "
+				+ "f.codigoFabricante, f.fabricante, f.paisDeOrigem " 
+				+ "FROM celulares c "
 				+ "JOIN marca m ON c.codigoMarca = m.codigoMarca "
-				+ "JOIN modelo mo ON c.codigoModelo = mo.codigoModelo " + "JOIN cor co ON c.codigoCor = co.codigoCor "
+				+ "JOIN modelo mo ON c.codigoModelo = mo.codigoModelo "
+				+ "JOIN cor co ON c.codigoCor = co.codigoCor "
 				+ "JOIN fabricante f ON c.codigoFabricante = f.codigoFabricante " 
 				+ "ORDER BY c.numeroDeSerie ASC");
 
@@ -68,13 +70,17 @@ public class DaoCelular {
 	}
 
 //	update
-	public void actualizarCelular(int codigo, double preco, int anoDeFabrico) throws SQLException {
+	public void actualizarCelular(int codigo, double preco, int anoDeFabrico,int codigoModelo, int codigoFabricante, int codigoMarca, int codigoCor) throws SQLException {
 		Connection con = Conexao.conectar();
 		PreparedStatement stmt = null;
-		stmt = con.prepareStatement("update celulares set  preco=?, anoDeFabrico=? where numeroDeSerie=?");
+		stmt = con.prepareStatement("update celulares set  preco=?, anoDeFabrico=?,  codigoModelo=? , codigoFabricante=? , codigoCor =? , codigoMarca=? where numeroDeSerie=?");
 		stmt.setDouble(1, preco);
 		stmt.setInt(2, anoDeFabrico);
-		stmt.setInt(3, codigo);
+		stmt.setInt(3,codigoModelo);
+		stmt.setInt(4, codigoFabricante);
+		stmt.setInt(5, codigoCor);
+		stmt.setInt(6, codigoMarca);
+		stmt.setInt(7, codigo);
 		stmt.executeUpdate();
 		con.close();
 	}

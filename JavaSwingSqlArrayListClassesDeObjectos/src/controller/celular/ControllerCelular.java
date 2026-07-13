@@ -19,8 +19,8 @@ public class ControllerCelular {
 		return dao.listaDeCelulares();
 	}
 
-	public void actualizarCelular(String usuario,String perfil,int codigo, double preco, int anoDeFabrico) throws SQLException {
-		dao.actualizarCelular(codigo,preco, anoDeFabrico);
+	public void actualizarCelular(String usuario,String perfil,int codigo, double preco, int anoDeFabrico, int codigoFabricante, int codigoModelo, int codigoCor, int codigoMarca) throws SQLException {
+		dao.actualizarCelular(codigo,preco,anoDeFabrico,codigoModelo,codigoFabricante,codigoMarca,codigoCor);
 		log.registarLog(usuario, perfil, "Actualizou um celular com o codigo"+codigo);
 	}
 

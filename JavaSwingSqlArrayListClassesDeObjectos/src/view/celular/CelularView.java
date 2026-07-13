@@ -301,8 +301,37 @@ public class CelularView implements ActionListener, MouseListener {
 		if (texto.isEmpty()) {
 			sorter.setRowFilter(null);
 		} else {
-			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), 1, 2, 3, 4, 5, 6, 7, 8));
+			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(texto), 1, 2, 3, 4, 5, 6, 7));
 		}
+	}
+
+	public void recarregarListas() {
+		String marcaSelecionada = (String) comboBoxMarca.getSelectedItem();
+		String modeloSelecionado = (String) comboBoxModelo.getSelectedItem();
+		String corSelecionada = (String) comboBoxCor.getSelectedItem();
+		String fabricanteSelecionado = (String) comboBoxFabricante.getSelectedItem();
+
+		carregarMarca();
+		carregarModelo();
+		carregarFabricante();
+		carregarCor();
+
+		if (marcaSelecionada != null) {
+			comboBoxMarca.setSelectedItem(marcaSelecionada);
+		}
+
+		if (modeloSelecionado != null) {
+			comboBoxModelo.setSelectedItem(modeloSelecionado);
+		}
+
+		if (corSelecionada != null) {
+			comboBoxCor.setSelectedItem(corSelecionada);
+		}
+
+		if (fabricanteSelecionado != null) {
+			comboBoxFabricante.setSelectedItem(fabricanteSelecionado);
+		}
+
 	}
 
 	private void carregarMarca() {
@@ -466,6 +495,11 @@ public class CelularView implements ActionListener, MouseListener {
 			JOptionPane.showMessageDialog(null, "Por favor preencha o campo!");
 			return;
 		}
+		int codigoMarca = listaDeMarcas.get(comboBoxMarca.getSelectedIndex()).getCodigoMarca();
+		int codigoCor = listaDeCores.get(comboBoxCor.getSelectedIndex()).getCodigoCor();
+		int codigoModelo = listaDeModelos.get(comboBoxModelo.getSelectedIndex()).getCodigoModelo();
+		int codigoFabricante = listaDeFabricantes.get(comboBoxFabricante.getSelectedIndex()).getCodigoFabricante();
+
 		try {
 			int codigo = (int) tableCelular.getValueAt(linhaSeleccionada, 0);
 			double preco = Double.parseDouble(precoStr);
@@ -473,7 +507,7 @@ public class CelularView implements ActionListener, MouseListener {
 
 			ControllerCelular controller = new ControllerCelular();
 			controller.actualizarCelular(usuarioLogado.getNome(), usuarioLogado.getPerfil(), codigo, preco,
-					anoDeFabrico);
+					anoDeFabrico, codigoModelo, codigoFabricante, codigoMarca, codigoCor);
 
 			JOptionPane.showMessageDialog(null, "Celular atualizado com sucesso!");
 			limparCaixas();
@@ -482,7 +516,13 @@ public class CelularView implements ActionListener, MouseListener {
 		} catch (NumberFormatException ex) {
 			JOptionPane.showMessageDialog(null, "Preco invalido, numeros apenas!!");
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex.getMessage());
+			if (ex.getMessage() != null && ex.getMessage().contains("foreign key constraint")) {
+				JOptionPane.showMessageDialog(null, "Itens ja nao estao disponiveis na base de dados "
+						+ "as listas foram recarregdas, por favor selecione novamente");
+				recarregarListas();
+			} else {
+				JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex.getMessage());
+			}
 		}
 	}
 
@@ -541,31 +581,38 @@ public class CelularView implements ActionListener, MouseListener {
 			int indice = tableCelular.getSelectedRow();
 			DefaultTableModel linhaSelecionada = (DefaultTableModel) tableCelular.getModel();
 
-			
 			Marca marcaDaLinha = (Marca) linhaSelecionada.getValueAt(indice, 1);
 			for (int i = 0; i < listaDeMarcas.size(); i++) {
 				if (listaDeMarcas.get(i).getCodigoMarca() == marcaDaLinha.getCodigoMarca()) {
 					comboBoxMarca.setSelectedIndex(i);
-					break;}}
-			
+					break;
+				}
+			}
+
 			Modelo modeloDaLinha = (Modelo) linhaSelecionada.getValueAt(indice, 2);
 			for (int i = 0; i < listaDeModelos.size(); i++) {
 				if (listaDeModelos.get(i).getCodigoModelo() == modeloDaLinha.getCodigoModelo()) {
 					comboBoxModelo.setSelectedIndex(i);
-					break;}}
-			
+					break;
+				}
+			}
+
 			Cor corDaLinha = (Cor) linhaSelecionada.getValueAt(indice, 3);
 			for (int i = 0; i < listaDeCores.size(); i++) {
 				if (listaDeCores.get(i).getCodigoCor() == corDaLinha.getCodigoCor()) {
 					comboBoxCor.setSelectedIndex(i);
-					break;}}
-			
+					break;
+				}
+			}
+
 			Fabricante fabricanteDaLinha = (Fabricante) linhaSelecionada.getValueAt(indice, 4);
 			for (int i = 0; i < listaDeFabricantes.size(); i++) {
 				if (listaDeFabricantes.get(i).getCodigoFabricante() == fabricanteDaLinha.getCodigoFabricante()) {
 					comboBoxFabricante.setSelectedIndex(i);
-					break;}}
-			
+					break;
+				}
+			}
+
 			textPreco.setText(linhaSelecionada.getValueAt(indice, 5).toString());
 
 		}

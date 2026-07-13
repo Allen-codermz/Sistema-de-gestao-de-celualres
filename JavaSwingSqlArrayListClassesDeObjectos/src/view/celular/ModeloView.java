@@ -394,6 +394,7 @@ public class ModeloView implements ActionListener, MouseListener {
 
 	public void mouseClicked(MouseEvent e) {
 		if (table.getSelectedRow() != -1) {
+			
 			int indice = table.getSelectedRow();
 			DefaultTableModel linhaSelecionada = (DefaultTableModel) table.getModel();
 
